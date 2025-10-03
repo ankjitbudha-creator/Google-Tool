@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SparklesIcon, Bars3Icon, XMarkIcon } from './Icons';
+import { tools } from '../config/tools';
 
 export const HomeHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
 
-  const headerClasses = isHomePage 
+  const isToolPage = tools.some(tool => tool.path === location.pathname);
+  const isTransparentPage = ['/', '/all-tools', '/about', '/contact'].includes(location.pathname) || isToolPage;
+
+  const headerClasses = isTransparentPage 
     ? "absolute top-0 left-0 right-0 z-20 bg-transparent text-white"
     : "relative bg-white dark:bg-slate-800 shadow-sm text-gray-800 dark:text-gray-200";
 
-  const brandLinkClasses = isHomePage ? "text-white" : "text-gray-800 dark:text-white";
+  const brandLinkClasses = isTransparentPage ? "text-white" : "text-gray-800 dark:text-white";
   
-  const navLinkClasses = isHomePage 
+  const navLinkClasses = isTransparentPage 
     ? "hover:text-brand-yellow transition-colors"
     : "hover:text-primary transition-colors";
     
-  const mobileMenuButtonClasses = isHomePage ? "text-white" : "text-gray-700 dark:text-gray-200";
+  const mobileMenuButtonClasses = isTransparentPage ? "text-white" : "text-gray-700 dark:text-gray-200";
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);

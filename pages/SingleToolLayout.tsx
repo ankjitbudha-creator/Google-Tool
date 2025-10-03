@@ -50,16 +50,13 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
       <HomeHeader />
 
       {/* Hero Section */}
-      <section 
-        className="bg-slate-100 dark:bg-slate-800/50 py-8"
-        style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23d1d5db" fill-opacity="0.1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')`}}
-      >
+      <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 text-white pt-32 pb-16">
         <div className="container mx-auto px-6 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">{tool.name}</h1>
-          <p className="text-gray-500 dark:text-gray-400">
-            <Link to="/" className="hover:text-primary">Home</Link> / 
-            <Link to="/all-tools" className="hover:text-primary"> Tools</Link> / {tool.name}
+          <p className="text-indigo-200 mb-2">
+            <Link to="/" className="hover:text-white">Home</Link> / 
+            <Link to="/all-tools" className="hover:text-white"> Tools</Link>
           </p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white">{tool.name}</h1>
         </div>
       </section>
 

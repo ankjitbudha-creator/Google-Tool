@@ -79,7 +79,7 @@ export const ContactPage: React.FC = () => {
             <HomeHeader />
 
             {/* Hero Section */}
-            <section className="bg-primary pt-24 pb-16">
+            <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 pt-32 pb-16">
                 <div className="container mx-auto px-6 text-center">
                     <p className="text-indigo-200 mb-2">Home / Contact Us</p>
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Contact Us</h1>

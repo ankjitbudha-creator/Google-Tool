@@ -26,7 +26,7 @@ export const AllToolsPage: React.FC = () => {
             <HomeHeader />
 
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-amber-500 pt-32 pb-20 text-white">
+            <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 pt-32 pb-20 text-white">
                 <div className="container mx-auto px-6 text-center">
                     <h1 className="text-4xl md:text-6xl font-bold mb-4">All Tools</h1>
                     <p className="text-lg md:text-xl text-indigo-200 max-w-3xl mx-auto mb-8">
