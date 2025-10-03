@@ -11,7 +11,8 @@ import {
     CalculatorIcon,
     ArrowsRightLeftIcon,
     SparklesIcon,
-    PencilSquareIcon
+    PencilSquareIcon,
+    PhotoIcon
 } from '../components/Icons';
 
 const categoriesWithIcons = [
@@ -20,12 +21,21 @@ const categoriesWithIcons = [
     { name: ToolCategory.CONVERTER, icon: ArrowsRightLeftIcon, category: ToolCategory.CONVERTER },
     { name: ToolCategory.GENERATOR, icon: SparklesIcon, category: ToolCategory.GENERATOR },
     { name: ToolCategory.UTILITY, icon: PencilSquareIcon, category: ToolCategory.UTILITY },
+    { name: ToolCategory.IMAGE, icon: PhotoIcon, category: ToolCategory.IMAGE },
 ];
 
 
 export const AllToolsPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('All');
+
+    const categoryCounts = useMemo(() => {
+        const counts: Record<string, number> = { All: tools.length };
+        tools.forEach(tool => {
+            counts[tool.category] = (counts[tool.category] || 0) + 1;
+        });
+        return counts;
+    }, []);
 
     const filteredTools = useMemo(() => {
         return tools.filter(tool => {
@@ -102,14 +112,21 @@ export const AllToolsPage: React.FC = () => {
                                         <li key={name}>
                                             <button
                                                 onClick={() => setActiveCategory(category)}
-                                                className={`w-full text-left flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors duration-200 ${
+                                                className={`w-full text-left flex items-center justify-between gap-3 px-4 py-2.5 rounded-md transition-colors duration-200 ${
                                                     activeCategory === category
                                                         ? 'bg-primary text-white font-semibold'
                                                         : 'text-gray-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                                                 }`}
                                             >
-                                                <Icon className="w-5 h-5" />
-                                                <span>{name}</span>
+                                                <div className="flex items-center gap-3">
+                                                    <Icon className="w-5 h-5" />
+                                                    <span>{name}</span>
+                                                </div>
+                                                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                                                    activeCategory === category ? 'bg-white text-primary' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                                                }`}>
+                                                    {categoryCounts[category] || 0}
+                                                </span>
                                             </button>
                                         </li>
                                     ))}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SparklesIcon, Bars3Icon, XMarkIcon } from './Icons';
 import { tools } from '../config/tools';
+import { ThemeToggle } from './ThemeToggle';
 
 export const HomeHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,17 +38,22 @@ export const HomeHeader: React.FC = () => {
             <SparklesIcon className="w-8 h-8" />
             <span className="text-2xl font-bold">Babal Tools</span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className={navLinkClasses}>Home</Link>
-            <Link href="/all-tools" className={navLinkClasses}>All Tools</Link>
-            <a href="#" className={navLinkClasses}>Blog</a>
-            <Link href="/about" className={navLinkClasses}>About</Link>
-            <Link href="/contact" className={navLinkClasses}>Contact</Link>
-          </nav>
-          <div className="md:hidden">
-            <button onClick={() => setIsMenuOpen(true)} aria-label="Open menu" className={mobileMenuButtonClasses}>
-              <Bars3Icon className="w-8 h-8" />
-            </button>
+          <div className="flex items-center">
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link href="/" className={navLinkClasses}>Home</Link>
+              <Link href="/all-tools" className={navLinkClasses}>All Tools</Link>
+              <a href="#" className={navLinkClasses}>Blog</a>
+              <Link href="/about" className={navLinkClasses}>About</Link>
+              <Link href="/contact" className={navLinkClasses}>Contact</Link>
+            </nav>
+            <div className="ml-6">
+                <ThemeToggle />
+            </div>
+            <div className="md:hidden ml-4">
+              <button onClick={() => setIsMenuOpen(true)} aria-label="Open menu" className={mobileMenuButtonClasses}>
+                <Bars3Icon className="w-8 h-8" />
+              </button>
+            </div>
           </div>
         </div>
       </header>

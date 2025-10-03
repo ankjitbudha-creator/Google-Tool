@@ -9,6 +9,10 @@ import { PasswordGenerator } from '../pages/generators/PasswordGenerator';
 import { WordCounter } from '../pages/utilities/WordCounter';
 import { FindAndReplaceTool } from '../pages/utilities/FindAndReplaceTool';
 import { PlaceholderToolPage } from '../pages/PlaceholderToolPage';
+import { CPSTest } from '../pages/utilities/CPSTest';
+import { ImageCropper } from '../pages/image/ImageCropper';
+import { ImageResizer } from '../pages/image/ImageResizer';
+import { ImageFlipper } from '../pages/image/ImageFlipper';
 import { 
   CalculatorIcon, ScaleIcon, KeyIcon,
   DocumentTextIcon, CakeIcon, ArrowsRightLeftIcon, 
@@ -20,7 +24,16 @@ import {
   CurrencyDollarIcon,
   ThermometerIcon,
   DocumentChartBarIcon,
-  CharacterSpacingIcon
+  CharacterSpacingIcon,
+  CursorArrowRaysIcon,
+  ClockIcon,
+  TrophyIcon,
+  PhotoIcon,
+  ArrowUpTrayIcon,
+  ArrowsPointingOutIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  ArrowsUpDownIcon
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -192,6 +205,85 @@ export const tools: Tool[] = [
       { icon: ArrowPathIcon, title: 'Bulk Replacement', description: 'Replace all occurrences of a word or phrase instantly.' },
       { icon: PlayIcon, title: 'Step-by-Step Control', description: 'Replace one occurrence at a time for more precise control over your text editing process.' },
       { icon: DocumentDuplicateIcon, title: 'Easy Copy', description: 'Instantly copy your edited text to the clipboard with one click.' },
+    ]
+  },
+  {
+    path: '/utilities/cps-test',
+    name: 'CPS Test — Check Clicks Per Second',
+    description: 'Test your clicking speed with our Clicks Per Second (CPS) test.',
+    category: ToolCategory.UTILITY,
+    component: CPSTest,
+    icon: CursorArrowRaysIcon,
+    about: 'The Clicks Per Second (CPS) Test is a fun and simple tool to measure your mouse clicking speed. It records the number of clicks you can make within a set time frame, usually 5 or 10 seconds, and then calculates your average clicks per second. It\'s a popular challenge among gamers and a great way to test your reflexes.',
+    howTo: [
+      { title: 'Start the Test', description: 'Click the large button that says "Click here to start".' },
+      { title: 'Click Rapidly', description: 'Once the test begins, click as fast as you can inside the green area for 5 seconds.' },
+      { title: 'See Your Score', description: 'After the timer runs out, your CPS score, total clicks, and rank will be displayed automatically.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: '5-Second Challenge', description: 'Test your clicking prowess in a quick and standardized 5-second sprint.' },
+      { icon: TrophyIcon, title: 'Instant Results & Ranking', description: 'Get your CPS score and a performance rank immediately after the test concludes.' },
+      { icon: ArrowPathIcon, title: 'Unlimited Retries', description: 'Easily restart the test with a single click to try and beat your previous score.' }
+    ]
+  },
+  {
+    path: '/image/image-cropper',
+    name: 'Image Cropper',
+    description: 'Crop and resize images online with ease.',
+    category: ToolCategory.IMAGE,
+    component: ImageCropper,
+    icon: PhotoIcon,
+    about: 'Our online Image Cropper provides a powerful and intuitive interface to crop, resize, and edit your images directly in your browser. With support for various aspect ratios, drag-and-drop functionality, and high-quality downloads, it\'s the perfect tool for preparing images for social media, websites, or personal projects. All processing is done on your device, ensuring your files remain private and secure.',
+    howTo: [
+      { title: 'Upload Your Image', description: 'Click the upload area to select a file, or simply drag and drop your image onto the canvas.' },
+      { title: 'Adjust the Crop Box', description: 'Drag the crop box to your desired position and use the corner handles to resize it. You can also select a preset aspect ratio.' },
+      { title: 'Download Your Image', description: 'Once you are satisfied with the selection, click the "Crop & Download" button to save the cropped image as a PNG file.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Client-Side Processing', description: 'Your images are processed locally in your browser, ensuring maximum privacy and security. No files are uploaded to a server.' },
+      { icon: ArrowsRightLeftIcon, title: 'Aspect Ratio Presets', description: 'Choose from common aspect ratios like 1:1 (square), 4:3, and 16:9, or use the freeform mode for custom dimensions.' },
+      { icon: ArrowUpTrayIcon, title: 'Drag & Drop Upload', description: 'Quickly upload your images by dragging them from your desktop directly into the tool.' },
+      { icon: DocumentDuplicateIcon, title: 'High-Quality PNG Export', description: 'Download your cropped image in the high-quality, lossless PNG format, perfect for web and print use.' }
+    ]
+  },
+  {
+    path: '/image/image-resizer',
+    name: 'Image Resizer',
+    description: 'Quickly resize images to exact pixel dimensions while maintaining aspect ratio.',
+    category: ToolCategory.IMAGE,
+    component: ImageResizer,
+    icon: ArrowsPointingOutIcon,
+    about: 'Our online Image Resizer is a simple yet powerful tool for changing the dimensions of your images. Whether you need to shrink a large photo for a website or enlarge a small icon, this tool lets you specify the exact width and height in pixels. You can lock the aspect ratio to prevent distortion or unlock it for custom sizing. All processing is done client-side, ensuring your images are never uploaded to a server.',
+    howTo: [
+      { title: 'Upload Your Image', description: 'Click the upload area to select a file, or simply drag and drop your image onto the designated area.' },
+      { title: 'Enter New Dimensions', description: 'Input your desired width and/or height in the pixel fields. The aspect ratio is locked by default to prevent stretching.' },
+      { title: 'Download Your Image', description: 'Once you have set the dimensions, click the "Resize & Download" button to save the new image as a PNG file.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Client-Side Privacy', description: 'Your images are resized directly in your browser. No data is sent to our servers, ensuring your files remain private.' },
+      { icon: LockClosedIcon, title: 'Aspect Ratio Lock', description: 'Maintain the original proportions of your image with the aspect ratio lock to avoid distortion. You can also unlock it for free-form resizing.' },
+      { icon: ArrowUpTrayIcon, title: 'Drag & Drop Upload', description: 'Quickly upload your images by dragging them from your desktop directly into the tool for a faster workflow.' },
+      { icon: DocumentDuplicateIcon, title: 'High-Quality PNG Export', description: 'Download your resized image in the high-quality, lossless PNG format, perfect for any use case.' }
+    ]
+  },
+  {
+    path: '/image/image-flipper',
+    name: 'Image Flipper',
+    description: 'Flip images horizontally or vertically with a single click.',
+    category: ToolCategory.IMAGE,
+    component: ImageFlipper,
+    icon: ArrowsRightLeftIcon,
+    about: 'The Image Flipper is a straightforward tool that lets you mirror your images. You can flip any image horizontally (like looking in a mirror) or vertically (upside down) instantly. All processing is done in your browser, so your images are never uploaded, ensuring your privacy is protected.',
+    howTo: [
+      { title: 'Upload Your Image', description: 'Click the upload area to select a file, or simply drag and drop your image.' },
+      { title: 'Choose Flip Direction', description: 'Click "Flip Horizontal" or "Flip Vertical" to see a live preview of the result.' },
+      { title: 'Download Your Image', description: 'Once you are happy with the result, click the "Download Flipped Image" button to save it as a PNG file.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Client-Side Privacy', description: 'Your images are flipped directly in your browser. No data is ever sent to our servers.' },
+      { icon: ArrowsRightLeftIcon, title: 'Horizontal Flip', description: 'Create a mirror image of your photo with a single click.' },
+      { icon: ArrowsUpDownIcon, title: 'Vertical Flip', description: 'Turn your image upside down instantly.' },
+      { icon: DocumentDuplicateIcon, title: 'High-Quality PNG Export', description: 'Download your flipped image in the high-quality, lossless PNG format.' }
     ]
   },
   {
