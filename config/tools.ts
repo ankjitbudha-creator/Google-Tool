@@ -8,13 +8,19 @@ import { NepaliDateConverter } from '../pages/converters/NepaliDateConverter';
 import { PasswordGenerator } from '../pages/generators/PasswordGenerator';
 import { WordCounter } from '../pages/utilities/WordCounter';
 import { FindAndReplaceTool } from '../pages/utilities/FindAndReplaceTool';
+import { PlaceholderToolPage } from '../pages/PlaceholderToolPage';
 import { 
-  CalculatorIcon, ScaleIcon, KeyIcon, BeakerIcon, 
+  CalculatorIcon, ScaleIcon, KeyIcon,
   DocumentTextIcon, CakeIcon, ArrowsRightLeftIcon, 
   MagnifyingGlassIcon, CalendarDaysIcon, ShieldCheckIcon,
   PencilIcon, DocumentDuplicateIcon, ArrowPathIcon, PlayIcon,
   HeartIcon,
-  UsersIcon
+  UsersIcon,
+  LanguageIcon,
+  CurrencyDollarIcon,
+  ThermometerIcon,
+  ClipboardDocumentListIcon,
+  ArrowsUpDownIcon
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -43,7 +49,7 @@ export const tools: Tool[] = [
     description: 'Quickly calculate tips and split the bill between any number of people.',
     category: ToolCategory.CALCULATOR,
     component: TipCalculator,
-    icon: CalculatorIcon,
+    icon: CurrencyDollarIcon,
     about: 'Our Tip Calculator makes it easy to figure out the right tip amount and see the total bill. You can also split the total cost among multiple people, making it perfect for group outings. Customize the tip percentage or use our handy presets.',
     howTo: [
         { title: 'Enter Bill Amount', description: 'Input the total amount of your bill before the tip.' },
@@ -89,7 +95,7 @@ export const tools: Tool[] = [
         { title: 'Get Result', description: 'Select the unit you want to convert to and see the result instantly.' }
     ],
     features: [
-        { icon: BeakerIcon, title: 'Multiple Categories', description: 'Supports conversions for length, weight, volume, area, and more.' },
+        { icon: CalculatorIcon, title: 'Multiple Categories', description: 'Supports conversions for length, weight, volume, area, and more.' },
         { icon: ArrowsRightLeftIcon, title: 'Swap Units', description: 'Instantly swap the "from" and "to" units with a single click for reverse conversions.' },
         { icon: CalculatorIcon, title: 'Real-Time Conversion', description: 'The converted value updates automatically as you type, providing immediate answers.' }
     ]
@@ -100,7 +106,7 @@ export const tools: Tool[] = [
     description: 'Convert temperatures between Celsius, Fahrenheit, and Kelvin scales.',
     category: ToolCategory.CONVERTER,
     component: TemperatureConverter,
-    icon: BeakerIcon,
+    icon: ThermometerIcon,
     about: 'The Temperature Converter provides a simple and fast way to switch between the three most common temperature scales: Celsius, Fahrenheit, and Kelvin. The interface is synchronized, meaning an update to any one of the fields will instantly update the other two, providing a seamless conversion experience.',
     howTo: [
         { title: 'Enter Temperature', description: 'Type a value into any of the three fields: Celsius, Fahrenheit, or Kelvin.' },
@@ -188,5 +194,38 @@ export const tools: Tool[] = [
       { icon: DocumentTextIcon, title: 'Text Processing', description: 'Perfect for editing documents, cleaning up data, formatting text, or making bulk changes to any text-based content quickly and efficiently.' },
       { icon: PencilIcon, title: 'User-Friendly', description: 'Simple and intuitive interface makes text editing accessible to everyone, from beginners to advanced users working with complex text processing tasks.' }
     ]
-  }
+  },
+  {
+    path: '/generators/invoice-generator',
+    name: 'Invoice Generator',
+    description: 'Create professional invoices quickly and easily.',
+    category: ToolCategory.GENERATOR,
+    component: PlaceholderToolPage,
+    icon: ClipboardDocumentListIcon,
+    about: 'This tool is currently under development. Soon, you will be able to create, customize, and download professional invoices for your business needs.',
+    howTo: [{ title: 'Coming Soon', description: 'This feature is not yet available.' }],
+    features: [],
+  },
+  {
+    path: '/converters/preeti-to-unicode',
+    name: 'Preeti to Unicode',
+    description: 'Convert legacy Preeti font text to standard Nepali Unicode.',
+    category: ToolCategory.CONVERTER,
+    component: PlaceholderToolPage,
+    icon: LanguageIcon,
+    about: 'This tool is currently under development. It will provide a seamless way to convert text written in the popular Preeti font to the universal Unicode standard for Nepali text.',
+    howTo: [{ title: 'Coming Soon', description: 'This feature is not yet available.' }],
+    features: [],
+  },
+  {
+    path: '/converters/word-case-converter',
+    name: 'Word Case Converter',
+    description: 'Change text casing to uppercase, lowercase, title case, and more.',
+    category: ToolCategory.CONVERTER,
+    component: PlaceholderToolPage,
+    icon: ArrowsUpDownIcon,
+    about: 'This tool is currently under development. It will allow you to easily convert blocks of text into various case formats, such as UPPERCASE, lowercase, Title Case, and Sentence case.',
+    howTo: [{ title: 'Coming Soon', description: 'This feature is not yet available.' }],
+    features: [],
+  },
 ];

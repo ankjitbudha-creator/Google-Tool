@@ -199,3 +199,33 @@ export const QrCodeIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h.75v.75H8.25v-.75ZM8.25 17.25h.75v.75H8.25v-.75ZM18.75 8.25h.75v.75h-.75V8.25Z" />
     </svg>
 );
+
+export const LanguageIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />
+  </svg>
+);
+
+export const CurrencyDollarIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 11.21 12.77 11 12 11h-1.23c-.47 0-.945-.146-1.32-.411l-.879-.659M12 6c-1.232 0-2.433.39-3.357 1.085l-.879.659c-1.171.879-1.171 2.303 0 3.182C8.464 11.609 9.23 12 10 12h1.23c.47 0 .945.146 1.32.411l.879.659c1.171.879 1.171 2.303 0 3.182C13.536 17.609 12.77 18 12 18H9" />
+  </svg>
+);
+
+export const ThermometerIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.375 21a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0ZM9.375 14.25V3.375c0-.923.752-1.675 1.675-1.675h.001c.923 0 1.674.752 1.674 1.675v10.875M9.375 14.25c0 .346.022.69.065 1.031.044.341.1.68.165 1.019M9.375 14.25c0-.346-.022-.69-.065-1.031c-.044-.341-.1-.68-.165-1.019m2.29 6.049c.065-.339.121-.678.165-1.019m0 0c.044-.341.065-.685.065-1.031m0 0c0-1.09.245-2.131.69-3.091" />
+  </svg>
+);
+
+export const ClipboardDocumentListIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-.665-.28-1.28-.758-1.712L16.708 2.55a2.25 2.25 0 0 0-1.586-.653H7.5A2.25 2.25 0 0 0 5.25 4.108v13.784c0 .665.28 1.28.758 1.712l2.829 2.829a2.25 2.25 0 0 0 1.586.653Z" />
+  </svg>
+);
+
+export const ArrowsUpDownIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+  </svg>
+);

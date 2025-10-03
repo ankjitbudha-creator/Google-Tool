@@ -34,10 +34,10 @@ export const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">Popular Tools</h3>
             <ul className="space-y-2">
-               <li><Link to="/generators/password" className="hover:text-primary transition-colors">Invoice Generator</Link></li>
-               <li><Link to="/converters/unit" className="hover:text-primary transition-colors">Preeti to Unicode</Link></li>
-               <li><Link to="/calculators/age" className="hover:text-primary transition-colors">Date Converter</Link></li>
-               <li><Link to="/utilities/word-counter" className="hover:text-primary transition-colors">Word Case Converter</Link></li>
+               <li><Link to="/generators/invoice-generator" className="hover:text-primary transition-colors">Invoice Generator</Link></li>
+               <li><Link to="/converters/preeti-to-unicode" className="hover:text-primary transition-colors">Preeti to Unicode</Link></li>
+               <li><Link to="/converters/nepali-date-converter" className="hover:text-primary transition-colors">Date Converter</Link></li>
+               <li><Link to="/converters/word-case-converter" className="hover:text-primary transition-colors">Word Case Converter</Link></li>
             </ul>
           </div>
 
