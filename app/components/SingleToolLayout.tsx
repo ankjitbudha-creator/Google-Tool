@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { HomeHeader } from '../components/HomeHeader';
-import { Footer } from '../components/Footer';
+import React from 'react';
+import Link from 'next/link';
 import { Tool } from '../types';
 import { tools } from '../config/tools';
-import { WrenchScrewdriverIcon, PencilSquareIcon } from '../components/Icons';
-import { Spinner } from '../components/Spinner';
+import { WrenchScrewdriverIcon, PencilSquareIcon } from './Icons';
 
 interface SingleToolLayoutProps {
   tool: Tool;
@@ -38,7 +35,6 @@ const HowToStep: React.FC<{ step: Tool['howTo'][0], index: number }> = ({ step, 
     </div>
 );
 
-
 const SidebarWidget: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
     <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
@@ -57,28 +53,18 @@ const AdPlaceholder: React.FC<{ isLarge?: boolean, title: string, description: s
 
 
 export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, children }) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => setIsLoading(false), 500); // Simulate loading
-    return () => clearTimeout(timer);
-  }, [tool.path]);
-
 
   const popularTools = tools.slice(0, 6);
   const relatedTools = tools.filter(t => t.category === tool.category && t.path !== tool.path).slice(0, 6);
 
   return (
     <div className="bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-300 min-h-screen flex flex-col">
-      <HomeHeader />
-
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 text-white pt-32 pb-16">
         <div className="container mx-auto px-6 text-center">
           <p className="text-indigo-200 mb-2">
-            <Link to="/" className="hover:text-white">Home</Link> / 
-            <Link to="/all-tools" className="hover:text-white"> Tools</Link>
+            <Link href="/" className="hover:text-white">Home</Link> / 
+            <Link href="/all-tools" className="hover:text-white"> Tools</Link>
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-white">{tool.name}</h1>
         </div>
@@ -89,50 +75,48 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
         <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Content Area */}
             <main className="flex-1 w-full lg:w-0">
-                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8 min-h-[300px] flex flex-col justify-center">
-                    {isLoading ? <Spinner text={`Loading ${tool.name}...`} /> : children}
+                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                    {children}
                 </div>
 
-                 {/* Detailed Info Sections Wrapper */}
-                {!isLoading && (
-                    <div className="space-y-12 mt-12">
-                        {/* About Section */}
+                {/* Detailed Info Sections Wrapper */}
+                <div className="space-y-12 mt-12">
+                    {/* About Section */}
+                    <section>
+                        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                            <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">About {tool.name}</h2>
+                            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">{tool.about}</p>
+                        </div>
+                    </section>
+
+                    {/* How to Use Section */}
+                    {tool.howTo && tool.howTo.length > 0 && (
                         <section>
                             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">About {tool.name}</h2>
-                                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">{tool.about}</p>
+                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">How to Use This Tool</h2>
+                                <div className="space-y-6">
+                                    {tool.howTo.map((step, index) => (
+                                        <HowToStep key={index} step={step} index={index} />
+                                    ))}
+                                </div>
                             </div>
                         </section>
+                    )}
 
-                        {/* How to Use Section */}
-                        {tool.howTo && tool.howTo.length > 0 && (
-                            <section>
-                                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">How to Use This Tool</h2>
-                                    <div className="space-y-6">
-                                        {tool.howTo.map((step, index) => (
-                                            <HowToStep key={index} step={step} index={index} />
-                                        ))}
-                                    </div>
+                    {/* Features Section */}
+                    {tool.features && tool.features.length > 0 && (
+                        <section>
+                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Key Features</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {tool.features.map((feature, index) => (
+                                        <FeatureCard key={index} feature={feature} />
+                                    ))}
                                 </div>
-                            </section>
-                        )}
-
-                        {/* Features Section */}
-                        {tool.features && tool.features.length > 0 && (
-                            <section>
-                                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Key Features</h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {tool.features.map((feature, index) => (
-                                            <FeatureCard key={index} feature={feature} />
-                                        ))}
-                                    </div>
-                                </div>
-                            </section>
-                        )}
-                    </div>
-                )}
+                            </div>
+                        </section>
+                    )}
+                </div>
             </main>
 
             {/* Sidebar */}
@@ -141,7 +125,7 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
                     <ul className="space-y-2">
                         {popularTools.map(t => (
                             <li key={t.path}>
-                                <Link to={t.path} className="flex items-center gap-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
+                                <Link href={t.path} className="flex items-center gap-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
                                     <t.icon className="w-5 h-5" />
                                     <span>{t.name}</span>
                                 </Link>
@@ -158,7 +142,7 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
                     <ul className="space-y-2">
                         {relatedTools.length > 0 ? relatedTools.map(t => (
                              <li key={t.path}>
-                                <Link to={t.path} className="flex items-center gap-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
+                                <Link href={t.path} className="flex items-center gap-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
                                      <t.icon className="w-5 h-5" />
                                     <span>{t.name}</span>
                                 </Link>
@@ -175,7 +159,6 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
             </aside>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

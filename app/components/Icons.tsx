@@ -232,6 +232,12 @@ export const CharacterSpacingIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export const CursorArrowRaysIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM9.75 11.25l3-3m3 3-3-3m-7.5 3L3 14.25m3-3-3 3m1.5-6L6 3m3 3L6 3m6 9 3 3m3-3-3 3M3 6l3 3m0 0-3 3" />
+    </svg>
+);
+
 export const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.95-4.243-1.591 1.591M5.25 12H3m4.243-4.95-1.591-1.591M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />

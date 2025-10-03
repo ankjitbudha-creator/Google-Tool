@@ -1,7 +1,7 @@
+"use client";
+
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { HomeHeader } from '../components/HomeHeader';
-import { Footer } from '../components/Footer';
+import Link from 'next/link';
 import { ToolCard } from '../components/ToolCard';
 import { tools } from '../config/tools';
 import { ToolCategory } from '../types';
@@ -22,8 +22,7 @@ const categoriesWithIcons = [
     { name: ToolCategory.UTILITY, icon: PencilSquareIcon, category: ToolCategory.UTILITY },
 ];
 
-
-export const AllToolsPage: React.FC = () => {
+export default function AllToolsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('All');
 
@@ -38,8 +37,6 @@ export const AllToolsPage: React.FC = () => {
 
     return (
         <div className="bg-light dark:bg-slate-900">
-            <HomeHeader />
-
             {/* Hero Section */}
             <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 pt-32 pb-20 text-white">
                 <div className="container mx-auto px-6 text-center">
@@ -67,7 +64,7 @@ export const AllToolsPage: React.FC = () => {
                     <nav aria-label="Breadcrumb" className="mb-8">
                         <ol className="flex items-center space-x-1 text-sm">
                             <li>
-                                <Link to="/" className="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-indigo-400 transition-colors">Home</Link>
+                                <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-indigo-400 transition-colors">Home</Link>
                             </li>
                             <li>
                                 <span className="mx-2 text-gray-400 dark:text-gray-500">/</span>
@@ -135,8 +132,6 @@ export const AllToolsPage: React.FC = () => {
                     </div>
                 </div>
             </section>
-            
-            <Footer />
         </div>
     );
 };
