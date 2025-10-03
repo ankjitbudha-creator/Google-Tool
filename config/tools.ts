@@ -19,8 +19,8 @@ import {
   LanguageIcon,
   CurrencyDollarIcon,
   ThermometerIcon,
-  ClipboardDocumentListIcon,
-  ArrowsUpDownIcon
+  DocumentChartBarIcon,
+  CharacterSpacingIcon
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -200,7 +200,7 @@ export const tools: Tool[] = [
     description: 'Create and download professional invoices.',
     category: ToolCategory.GENERATOR,
     component: PlaceholderToolPage,
-    icon: ClipboardDocumentListIcon,
+    icon: DocumentChartBarIcon,
     about: 'Our Invoice Generator makes creating professional invoices effortless. Customize templates, add your logo, calculate totals with taxes, and download print-ready PDFs. Perfect for freelancers and small businesses looking to streamline their billing process.',
     howTo: [
         { title: 'Fill in Details', description: 'Enter your business info, client details, and line items with descriptions, quantities, and prices.' },
@@ -238,7 +238,7 @@ export const tools: Tool[] = [
     description: 'Convert text between different letter cases.',
     category: ToolCategory.CONVERTER,
     component: PlaceholderToolPage,
-    icon: ArrowsUpDownIcon,
+    icon: CharacterSpacingIcon,
     about: 'The Word Case Converter tool allows you to easily transform the case of your text. With options for UPPERCASE, lowercase, Title Case, and Sentence case, it\'s perfect for editors, writers, and anyone who needs to quickly format their text for headlines, titles, or articles.',
     howTo: [
         { title: 'Enter Your Text', description: 'Paste or type the text you want to convert into the text area.' },
@@ -246,7 +246,7 @@ export const tools: Tool[] = [
         { title: 'Copy the Result', description: 'Your text is instantly converted. Copy it to your clipboard for immediate use.' }
     ],
     features: [
-        { icon: ArrowsUpDownIcon, title: 'Multiple Case Formats', description: 'Switch between UPPERCASE, lowercase, Title Case, Sentence case, and more.' },
+        { icon: CharacterSpacingIcon, title: 'Multiple Case Formats', description: 'Switch between UPPERCASE, lowercase, Title Case, Sentence case, and more.' },
         { icon: PlayIcon, title: 'Instant Conversion', description: 'See your text transform in real-time as you select different case options.' },
         { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Effortlessly copy the formatted text to your clipboard.' }
     ],

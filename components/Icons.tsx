@@ -218,14 +218,16 @@ export const ThermometerIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const ClipboardDocumentListIcon = (props: React.SVGProps<SVGSVGElement>) => (
+export const DocumentChartBarIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-.665-.28-1.28-.758-1.712L16.708 2.55a2.25 2.25 0 0 0-1.586-.653H7.5A2.25 2.25 0 0 0 5.25 4.108v13.784c0 .665.28 1.28.758 1.712l2.829 2.829a2.25 2.25 0 0 0 1.586.653Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25A2.25 2.25 0 0 1 5.25 3h4.5M12 3v5.25m2.25-5.25H21" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 9.75h3M10.5 12.75h3m-3.375-6h.008v.008h-.008V6.75Z" />
   </svg>
 );
 
-export const ArrowsUpDownIcon = (props: React.SVGProps<SVGSVGElement>) => (
+export const CharacterSpacingIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 4.5h13.5m-13.5 15h13.5M7.875 4.5v15m8.25-15v15M6 9.75h.008v.008H6v-.008Zm12 0h.008v.008h-.008v-.008Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 14.25h.008v.008H6v-.008Zm12 0h.008v.008h-.008v-.008Z" />
   </svg>
 );
