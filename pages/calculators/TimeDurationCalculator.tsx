@@ -65,10 +65,10 @@ export const TimeDurationCalculator: React.FC = () => {
                     <div className="p-6 bg-gray-100 dark:bg-gray-900 rounded-lg space-y-4">
                         <div>
                             <h3 className="text-xl font-semibold text-center mb-2">Duration Breakdown</h3>
-                            {/* FIX: Cast `unknown` values to `number` for comparison and function arguments */}
+                            {/* FIX: Use Number() to safely convert values for comparison, display, and function arguments, resolving potential type errors. */}
                             <div className="flex flex-wrap justify-center items-baseline gap-x-4 gap-y-2 text-center">
-                                {Object.entries(duration.breakdown).filter(([, val]) => (val as number) > 0).length > 0 ? Object.entries(duration.breakdown).map(([unit, value]) => (value as number) > 0 && (
-                                    <p key={unit}><span className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{value as number}</span> <span className="text-lg">{pluralize(value as number, unit)}</span></p>
+                                {Object.entries(duration.breakdown).filter(([, val]) => Number(val) > 0).length > 0 ? Object.entries(duration.breakdown).map(([unit, value]) => Number(value) > 0 && (
+                                    <p key={unit}><span className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{Number(value)}</span> <span className="text-lg">{pluralize(Number(value), unit)}</span></p>
                                 )) : <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">0 seconds</p>}
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { HomeHeader } from '../components/HomeHeader';
 import { Footer } from '../components/Footer';
@@ -15,6 +15,8 @@ import {
     PhotoIcon,
     DocumentDuplicateIcon
 } from '../components/Icons';
+import { SchemaMarkup } from '../components/SchemaMarkup';
+import { siteConfig } from '../config/site';
 
 const categoriesWithIcons = [
     { name: 'All Tools', icon: WrenchScrewdriverIcon, category: 'All' },
@@ -26,10 +28,12 @@ const categoriesWithIcons = [
     { name: ToolCategory.PDF, icon: DocumentDuplicateIcon, category: ToolCategory.PDF },
 ];
 
+const ITEMS_PER_PAGE = 12;
 
 export const AllToolsPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('All');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const categoryCounts = useMemo(() => {
         const counts: Record<string, number> = { All: tools.length };
@@ -48,8 +52,52 @@ export const AllToolsPage: React.FC = () => {
         });
     }, [searchQuery, activeCategory]);
 
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery, activeCategory]);
+
+    const totalPages = Math.ceil(filteredTools.length / ITEMS_PER_PAGE);
+    const paginatedTools = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredTools.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [currentPage, filteredTools]);
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": `${siteConfig.baseURL}/#/`
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "All Tools",
+                "item": `${siteConfig.baseURL}/#/all-tools`
+            }
+        ]
+    };
+    
+    const itemListSchema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Available Tools",
+        "itemListElement": filteredTools.map((tool, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "url": `${siteConfig.baseURL}/#${tool.path}`,
+            "name": tool.name,
+            "description": tool.description
+        }))
+    };
+
+
     return (
         <div className="bg-light dark:bg-slate-900">
+            <SchemaMarkup schema={[breadcrumbSchema, itemListSchema]} />
             <HomeHeader />
 
             {/* Hero Section */}
@@ -138,9 +186,9 @@ export const AllToolsPage: React.FC = () => {
 
                         {/* Tools Grid Section */}
                         <main className="flex-1">
-                            {filteredTools.length > 0 ? (
+                            {paginatedTools.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-                                    {filteredTools.map(tool => (
+                                    {paginatedTools.map(tool => (
                                         <ToolCard key={tool.path} tool={tool} />
                                     ))}
                                 </div>
@@ -149,6 +197,39 @@ export const AllToolsPage: React.FC = () => {
                                     <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300">No tools found</h3>
                                     <p className="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search or filter.</p>
                                 </div>
+                            )}
+
+                            {totalPages > 1 && (
+                                <nav aria-label="Pagination" className="mt-12 flex justify-center items-center space-x-2">
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        disabled={currentPage === 1}
+                                        className="px-4 py-2 rounded-md bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Previous
+                                    </button>
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
+                                        <button
+                                            key={pageNumber}
+                                            onClick={() => setCurrentPage(pageNumber)}
+                                            className={`px-4 py-2 rounded-md border text-sm font-medium ${
+                                                currentPage === pageNumber
+                                                    ? 'bg-primary text-white border-primary'
+                                                    : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                            }`}
+                                            aria-current={currentPage === pageNumber ? 'page' : undefined}
+                                        >
+                                            {pageNumber}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages}
+                                        className="px-4 py-2 rounded-md bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Next
+                                    </button>
+                                </nav>
                             )}
                         </main>
                     </div>

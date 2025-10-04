@@ -11,6 +11,8 @@ import {
     ClockIcon,
     DocumentTextIcon
 } from '../components/Icons';
+import { SchemaMarkup } from '../components/SchemaMarkup';
+import { siteConfig } from '../config/site';
 
 const testimonials = [
     {
@@ -41,8 +43,31 @@ const HeroIconCard: React.FC<{icon: React.ElementType, text: string, className?:
 
 
 export const HomePage: React.FC = () => {
+  const schemas = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": siteConfig.baseURL,
+      "name": siteConfig.name,
+      "description": siteConfig.description,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${siteConfig.baseURL}/#/all-tools?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": siteConfig.baseURL,
+      "name": siteConfig.name,
+      "logo": siteConfig.logo,
+    }
+  ];
+
   return (
     <div className="bg-light dark:bg-slate-900 text-gray-800 dark:text-gray-300">
+      <SchemaMarkup schema={schemas} />
       <HomeHeader />
 
       {/* Hero Section */}

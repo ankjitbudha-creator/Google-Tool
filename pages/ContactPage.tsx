@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { HomeHeader } from '../components/HomeHeader';
 import { Footer } from '../components/Footer';
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '../components/Icons';
+import { SchemaMarkup } from '../components/SchemaMarkup';
+import { siteConfig } from '../config/site';
 
 const contactDetails = [
     {
@@ -74,8 +76,22 @@ export const ContactPage: React.FC = () => {
         alert('Message sent! (Simulation)');
     };
 
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+            }
+        }))
+    };
+
     return (
         <div className="bg-light dark:bg-slate-900 text-gray-800 dark:text-gray-900">
+            <SchemaMarkup schema={faqSchema} />
             <HomeHeader />
 
             {/* Hero Section */}

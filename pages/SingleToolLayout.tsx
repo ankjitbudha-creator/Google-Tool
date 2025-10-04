@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { HomeHeader } from '../components/HomeHeader';
 import { Footer } from '../components/Footer';
-import { Tool } from '../types';
+import { Tool, ToolCategory } from '../types';
 import { tools } from '../config/tools';
 import { WrenchScrewdriverIcon, PencilSquareIcon } from '../components/Icons';
 import { Spinner } from '../components/Spinner';
+import { SchemaMarkup } from '../components/SchemaMarkup';
+import { siteConfig } from '../config/site';
 
 interface SingleToolLayoutProps {
   tool: Tool;
@@ -57,6 +59,17 @@ const AdPlaceholder: React.FC<{ isLarge?: boolean, title: string, description: s
     </div>
 );
 
+const getApplicationCategory = (category: ToolCategory) => {
+    switch (category) {
+        case ToolCategory.CALCULATOR: return 'BusinessApplication';
+        case ToolCategory.CONVERTER: return 'Utilities';
+        case ToolCategory.GENERATOR: return 'DeveloperApplication';
+        case ToolCategory.IMAGE: return 'MultimediaApplication';
+        case ToolCategory.PDF: return 'ProductivityApplication';
+        default: return 'BrowserApplication';
+    }
+};
+
 
 export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, children }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -71,8 +84,53 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
   const popularTools = tools.slice(0, 6);
   const relatedTools = tools.filter(t => t.category === tool.category && t.path !== tool.path).slice(0, 6);
 
+  // Schema Markup Generation
+  const toolUrl = `${siteConfig.baseURL}/#${tool.path}`;
+  const schemas: object[] = [];
+
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${siteConfig.baseURL}/#/` },
+        { "@type": "ListItem", "position": 2, "name": "All Tools", "item": `${siteConfig.baseURL}/#/all-tools` },
+        { "@type": "ListItem", "position": 3, "name": tool.name }
+    ]
+  });
+
+  schemas.push({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": tool.name,
+      "description": tool.description,
+      "applicationCategory": getApplicationCategory(tool.category),
+      "operatingSystem": "Web-based",
+      "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+      },
+      "featureList": tool.features.map(f => f.title)
+  });
+
+  if (tool.howTo && tool.howTo.length > 0) {
+      schemas.push({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": `How to use the ${tool.name}`,
+          "step": tool.howTo.map((step, index) => ({
+              "@type": "HowToStep",
+              "name": step.title,
+              "text": step.description,
+              "position": index + 1,
+              "url": toolUrl
+          }))
+      });
+  }
+
   return (
     <div className="bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-300 min-h-screen flex flex-col">
+      <SchemaMarkup schema={schemas} />
       <HomeHeader />
 
       {/* Hero Section */}

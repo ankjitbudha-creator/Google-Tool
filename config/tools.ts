@@ -908,21 +908,21 @@ export const tools: Tool[] = [
   },
   {
     path: '/pdf/pdf-to-word',
-    name: 'PDF to Word Converter',
-    description: 'Convert PDF files to editable Word documents.',
+    name: 'PDF to Text Extractor',
+    description: 'Extract text from PDF files for copying and editing.',
     category: ToolCategory.PDF,
-    component: PdfToWordConverter,
+    component: PdfToWordConverter, // Filename remains the same to minimize changes
     icon: DocumentArrowDownIcon,
-    about: 'This tool will allow you to convert your PDF documents into editable Microsoft Word (.docx) files, preserving the layout and formatting as much as possible. This feature is currently under development.',
+    about: 'This tool allows you to extract all text from a PDF document. It\'s useful for when you need to copy content from a PDF for use in other applications. Note that this tool extracts plain text only and does not preserve complex formatting or layouts.',
     howTo: [
-      { title: 'Coming Soon', description: 'Upload your PDF file.' },
-      { title: 'Coming Soon', description: 'The tool will process the file and create a Word document.' },
-      { title: 'Coming Soon', description: 'Download the converted .docx file.' }
+      { title: 'Upload Your PDF', description: 'Select a PDF file from your device.' },
+      { title: 'Extract Text', description: 'The tool will automatically process the file and extract all text content.' },
+      { title: 'Copy Result', description: 'The extracted text will appear in a text box, ready for you to copy.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side PDF to Word conversion tool.' },
-      { icon: DocumentTextIcon, title: 'Editable Documents', description: 'Once launched, you will be able to edit your PDF content easily in Microsoft Word.' },
-      { icon: ShieldCheckIcon, title: 'Privacy Focused', description: 'Like our other tools, this will be a fully client-side converter.' }
+      { icon: DocumentTextIcon, title: 'Plain Text Extraction', description: 'Quickly get all the textual content from your PDF files.' },
+      { icon: ShieldCheckIcon, title: 'Client-Side & Secure', description: 'Your PDF is processed in your browser. No files are uploaded to a server.' },
+      { icon: DocumentDuplicateIcon, title: 'Easy Copying', description: 'Copy all extracted text to your clipboard with a single click.' }
     ]
   },
   {
@@ -951,16 +951,16 @@ export const tools: Tool[] = [
     category: ToolCategory.PDF,
     component: MergePdf,
     icon: DocumentPlusIcon,
-    about: 'This tool will allow you to merge several PDF files into one document, in the order you specify. This feature is currently under development.',
+    about: 'Easily combine multiple PDF files into a single document. Upload your files, arrange them in the desired order, and merge them with one click. All processing happens securely in your browser.',
     howTo: [
-      { title: 'Coming Soon', description: 'Upload the PDF files you want to combine.' },
-      { title: 'Coming Soon', description: 'Arrange the files into the desired order.' },
-      { title: 'Coming Soon', description: 'Click "Merge" to download the combined PDF.' }
+      { title: 'Upload PDFs', description: 'Drag and drop or select the PDF files you want to combine.' },
+      { title: 'Order Files', description: 'Arrange the files into the desired order using the up and down arrows.' },
+      { title: 'Merge & Download', description: 'Click "Merge PDFs" to download the combined PDF file.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a powerful, client-side PDF merging tool.' },
-      { icon: ArrowUpTrayIcon, title: 'Multiple Files', description: 'Will support uploading and combining many PDFs at once.' },
-      { icon: ShieldCheckIcon, title: 'Privacy Focused', description: 'Like our other tools, this will be a fully client-side converter.' }
+      { icon: ArrowUpTrayIcon, title: 'Multiple File Upload', description: 'Upload and combine many PDFs at once.' },
+      { icon: ArrowsUpDownIcon, title: 'Reorder Files', description: 'Easily drag and drop or use arrows to arrange your PDFs in the perfect sequence before merging.' },
+      { icon: ShieldCheckIcon, title: 'Client-Side & Secure', description: 'Your documents are merged directly in your browser, ensuring your data remains private.' }
     ]
   },
   {
@@ -970,16 +970,17 @@ export const tools: Tool[] = [
     category: ToolCategory.PDF,
     component: SplitPdf,
     icon: ScissorsIcon,
-    about: 'This tool will allow you to split a single PDF file into multiple smaller PDFs, either by extracting specific pages, page ranges, or splitting every page into a separate file. This feature is currently under development.',
+    about: 'This tool allows you to split a single PDF file into multiple smaller PDFs. You can extract specific pages into a new file, or save each selected page as a separate PDF document.',
     howTo: [
-      { title: 'Coming Soon', description: 'Upload the PDF file you want to split.' },
-      { title: 'Coming Soon', description: 'Choose your splitting options (e.g., by page range).' },
-      { title: 'Coming Soon', description: 'Download your new, smaller PDF files.' }
+      { title: 'Upload PDF', description: 'Upload the PDF file you want to split.' },
+      { title: 'Select Pages', description: 'Click on the page thumbnails to select the pages you want to extract.' },
+      { title: 'Choose Split Mode', description: 'Decide whether to merge selected pages into one file or save each as a separate file.' },
+      { title: 'Download PDFs', description: 'Download your new, smaller PDF files.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are building a versatile PDF splitting tool that runs in your browser.' },
-      { icon: DocumentTextIcon, title: 'Flexible Options', description: 'Will allow splitting by range, extracting pages, and more.' },
-      { icon: ShieldCheckIcon, title: 'Privacy Focused', description: 'Your documents will be processed locally on your device.' }
+      { icon: DocumentTextIcon, title: 'Flexible Splitting', description: 'Merge selected pages into a new PDF or save each selected page individually.' },
+      { icon: PhotoIcon, title: 'Page Preview', description: 'Visually select the pages you want to extract with clear thumbnail previews.' },
+      { icon: ShieldCheckIcon, title: 'Browser-Based Security', description: 'Your PDF is processed locally on your device, ensuring privacy.' }
     ]
   },
   {
@@ -989,16 +990,16 @@ export const tools: Tool[] = [
     category: ToolCategory.PDF,
     component: SignPdf,
     icon: PencilSquareIcon,
-    about: 'This tool will enable you to easily add a signature to your PDF documents. You will be able to draw a signature, type one, or upload an image of your signature. This feature is coming soon.',
+    about: 'Easily add a signature to your PDF documents. Draw your signature, place it on the desired page, and download your signed document. All operations are performed securely in your browser.',
     howTo: [
-      { title: 'Coming Soon', description: 'Upload the PDF document you need to sign.' },
-      { title: 'Coming Soon', description: 'Create or upload your signature.' },
-      { title: 'Coming Soon', description: 'Place your signature on the document and download it.' }
+      { title: 'Upload PDF', description: 'Upload the PDF document you need to sign.' },
+      { title: 'Create Signature', description: 'Click "Add Signature" to open a drawing pad and create your signature.' },
+      { title: 'Place & Download', description: 'Click on the document where you want to place the signature, then download the signed PDF.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are developing an intuitive and secure PDF signing tool.' },
-      { icon: PencilIcon, title: 'Multiple Signature Types', description: 'Will support drawing, typing, or uploading a signature.' },
-      { icon: ShieldCheckIcon, title: 'Client-Side Security', description: 'Your signature and documents will not be uploaded to any server.' }
+      { icon: PencilIcon, title: 'Draw Signature', description: 'Use your mouse or touchscreen to draw your signature directly in the browser.' },
+      { icon: CursorArrowRaysIcon, title: 'Easy Placement', description: 'Simply click on the document page to place your created signature exactly where you need it.' },
+      { icon: ShieldCheckIcon, title: 'Client-Side Security', description: 'Your signature and documents are never uploaded to any server, ensuring complete privacy.' }
     ]
   },
 ];

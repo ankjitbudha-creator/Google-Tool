@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Spinner } from '../../components/Spinner';
-// FIX: Replace non-existent ArrowUpIcon and ArrowDownIcon with a suitable existing icon like PlayIcon and rotate it.
-import { ArrowUpTrayIcon, TrashIcon, PlayIcon } from '../../components/Icons';
+import { ArrowUpTrayIcon, TrashIcon, ChevronUpIcon, ChevronDownIcon } from '../../components/Icons';
 
 declare var jspdf: any;
 
@@ -136,8 +135,8 @@ export const JpgToPdfConverter: React.FC = () => {
                                     <img src={img.preview} alt={img.file.name} className="w-full h-24 object-cover rounded"/>
                                     <p className="text-xs truncate mt-1">{img.file.name}</p>
                                     <div className="absolute top-1 right-1 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button onClick={() => moveImage(index, 'up')} disabled={index === 0} className="p-1 bg-white/70 rounded-full disabled:opacity-30"><PlayIcon className="w-4 h-4" style={{ transform: 'rotate(-90deg)' }}/></button>
-                                        <button onClick={() => moveImage(index, 'down')} disabled={index === images.length - 1} className="p-1 bg-white/70 rounded-full disabled:opacity-30"><PlayIcon className="w-4 h-4" style={{ transform: 'rotate(90deg)' }}/></button>
+                                        <button onClick={() => moveImage(index, 'up')} disabled={index === 0} className="p-1 bg-white/70 rounded-full disabled:opacity-30"><ChevronUpIcon className="w-4 h-4"/></button>
+                                        <button onClick={() => moveImage(index, 'down')} disabled={index === images.length - 1} className="p-1 bg-white/70 rounded-full disabled:opacity-30"><ChevronDownIcon className="w-4 h-4"/></button>
                                         <button onClick={() => removeImage(img.id)} className="p-1 bg-red-500/80 text-white rounded-full"><TrashIcon className="w-4 h-4"/></button>
                                     </div>
                                 </div>
