@@ -6,9 +6,11 @@ import { UnitConverter } from '../components/tools/converters/UnitConverter';
 import { TemperatureConverter } from '../components/tools/converters/TemperatureConverter';
 import { NepaliDateConverter } from '../components/tools/converters/NepaliDateConverter';
 import { PasswordGenerator } from '../components/tools/generators/PasswordGenerator';
+import { MD5Generator } from '../components/tools/generators/MD5Generator';
+import { RandomNumberGenerator } from '../components/tools/generators/RandomNumberGenerator';
+import { LoremGenerator } from '../components/tools/generators/LoremGenerator';
 import { WordCounter } from '../components/tools/utilities/WordCounter';
 import { FindAndReplaceTool } from '../components/tools/utilities/FindAndReplaceTool';
-import { PlaceholderToolPage } from '../components/tools/PlaceholderToolPage';
 import { CPSTest } from '../components/tools/utilities/CPSTest';
 import { ImageCropper } from '../components/tools/image/ImageCropper';
 import { ImageResizer } from '../components/tools/image/ImageResizer';
@@ -16,6 +18,17 @@ import { ImageFlipper } from '../components/tools/image/ImageFlipper';
 import { ImageRotator } from '../components/tools/image/ImageRotator';
 import { PassportPhotoMaker } from '../components/tools/image/PassportPhotoMaker';
 import { AddWatermark } from '../components/tools/image/AddWatermark';
+import { CompressJPG } from '../components/tools/image/CompressJPG';
+import { IncreaseJPGSize } from '../components/tools/image/IncreaseJPGSize';
+import { CompressJPGTo50kb } from '../components/tools/image/CompressJPGTo50kb';
+import { CompressJPGTo100kb } from '../components/tools/image/CompressJPGTo100kb';
+import { CompressJPGTo200kb } from '../components/tools/image/CompressJPGTo200kb';
+import { InvoiceGenerator } from '../components/tools/generators/InvoiceGenerator';
+import { PreetiToUnicode } from '../components/tools/converters/PreetiToUnicode';
+import { WordCaseConverter } from '../components/tools/converters/WordCaseConverter';
+import { QRCodeGenerator } from '../components/tools/generators/QRCodeGenerator';
+import { BarcodeGenerator } from '../components/tools/generators/BarcodeGenerator';
+import { BarcodeScanner } from '../components/tools/utilities/BarcodeScanner';
 import { 
   CalculatorIcon, ScaleIcon, KeyIcon,
   DocumentTextIcon, CakeIcon, ArrowsRightLeftIcon, 
@@ -41,6 +54,11 @@ import {
   IdentificationIcon,
   PencilSquareIcon,
   TrashIcon,
+  ArrowsPointingInIcon,
+  ArrowTrendingUpIcon,
+  RocketLaunchIcon,
+  QrCodeIcon,
+  BarcodeIcon
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -177,6 +195,103 @@ export const tools: Tool[] = [
     ]
   },
   {
+    path: '/generators/md5-generator',
+    name: 'MD5 Generator',
+    description: 'Generate the MD5 hash of any text.',
+    category: ToolCategory.GENERATOR,
+    component: MD5Generator,
+    icon: ShieldCheckIcon,
+    about: 'The MD5 Generator computes a 128-bit hash value from any string of text. This tool is useful for verifying data integrity and for cryptographic purposes. The hash is generated in real-time in your browser as you type.',
+    howTo: [
+      { title: 'Enter Text', description: 'Type or paste the text you want to hash into the input field.' },
+      { title: 'View Hash', description: 'The 32-character hexadecimal MD5 hash will appear in the output field instantly.' },
+      { title: 'Copy Hash', description: 'Click the copy button to easily copy the generated hash to your clipboard.' }
+    ],
+    features: [
+      { icon: RocketLaunchIcon, title: 'Real-Time Hashing', description: 'The MD5 hash is calculated and updated instantly as you type.' },
+      { icon: ShieldCheckIcon, title: 'Client-Side Security', description: 'All calculations are performed locally in your browser, ensuring your data remains private.' },
+      { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Conveniently copy the generated hash to your clipboard with a single click.' }
+    ]
+  },
+  {
+    path: '/generators/random-number-generator',
+    name: 'Random Number Generator',
+    description: 'Generate random numbers with custom settings.',
+    category: ToolCategory.GENERATOR,
+    component: RandomNumberGenerator,
+    icon: CalculatorIcon,
+    about: 'A versatile tool for generating random numbers. You can specify a range (minimum and maximum), define how many numbers to generate, and choose whether to allow duplicates. Perfect for games, statistical sampling, or any situation where you need random numbers.',
+    howTo: [
+      { title: 'Set Range', description: 'Enter the minimum and maximum values for your desired number range.' },
+      { title: 'Define Quantity', description: 'Specify how many random numbers you want to generate.' },
+      { title: 'Choose Options', description: 'Decide if you want to allow duplicate numbers in the results.' },
+      { title: 'Generate & Copy', description: 'Click "Generate" to see the results, then copy them with a single click.' }
+    ],
+    features: [
+      { icon: PencilIcon, title: 'Customizable Range', description: 'Generate numbers within any specific range by setting a minimum and maximum.' },
+      { icon: ArrowsRightLeftIcon, title: 'Control Duplicates', description: 'Choose whether the generated set of numbers can contain duplicates or must be unique.' },
+      { icon: DocumentTextIcon, title: 'Bulk Generation', description: 'Generate multiple random numbers at once to suit your needs.' }
+    ]
+  },
+  {
+    path: '/generators/lorem-ipsum-generator',
+    name: 'Lorem Ipsum Generator',
+    description: 'Generate placeholder text for your designs.',
+    category: ToolCategory.GENERATOR,
+    component: LoremGenerator,
+    icon: DocumentTextIcon,
+    about: 'Quickly generate "Lorem Ipsum" placeholder text for your mockups, designs, or documents. This tool allows you to create a specific number of paragraphs, sentences, or words, giving you the exact amount of text you need.',
+    howTo: [
+      { title: 'Select Type', description: 'Choose whether you want to generate paragraphs, sentences, or words.' },
+      { title: 'Enter Amount', description: 'Specify the number of paragraphs, sentences, or words you need.' },
+      { title: 'Generate Text', description: 'Click the "Generate" button to create the placeholder text.' },
+      { title: 'Copy Text', description: 'Use the copy button to easily transfer the generated text to your clipboard.' }
+    ],
+    features: [
+      { icon: PencilIcon, title: 'Flexible Generation', description: 'Generate text by the number of paragraphs, sentences, or words.' },
+      { icon: RocketLaunchIcon, title: 'Instant & Fast', description: 'Create large blocks of placeholder text instantly with a single click.' },
+      { icon: DocumentDuplicateIcon, title: 'Easy to Use', description: 'A simple interface and one-click copy make it perfect for designers and developers.' }
+    ]
+  },
+  {
+    path: '/generators/qr-code-generator',
+    name: 'QR Code Generator',
+    description: 'Create custom QR codes for URLs, text, and more.',
+    category: ToolCategory.GENERATOR,
+    component: QRCodeGenerator,
+    icon: QrCodeIcon,
+    about: 'Our QR Code Generator makes it easy to create high-quality QR codes for websites, contact information, Wi-Fi access, and more. Customize the colors and download your QR code as a PNG file, ready to be used anywhere.',
+    howTo: [
+        { title: 'Enter Data', description: 'Type or paste the URL, text, or other information you want to encode into the QR code.' },
+        { title: 'Customize (Optional)', description: 'Change the foreground and background colors to match your branding.' },
+        { title: 'Download', description: 'Click the "Download QR Code" button to save the generated image to your device.' }
+    ],
+    features: [
+        { icon: PencilIcon, title: 'Color Customization', description: 'Personalize your QR code with custom colors for both the foreground and background.' },
+        { icon: ShieldCheckIcon, title: 'Error Correction', description: 'Choose from different error correction levels to ensure your QR code remains scannable even if partially damaged.' },
+        { icon: DocumentDuplicateIcon, title: 'High-Quality PNG', description: 'Download your QR code as a high-resolution PNG file suitable for both digital and print use.' }
+    ]
+  },
+  {
+    path: '/generators/barcode-generator',
+    name: 'Barcode Generator',
+    description: 'Generate various types of barcodes like CODE128, EAN, and UPC.',
+    category: ToolCategory.GENERATOR,
+    component: BarcodeGenerator,
+    icon: BarcodeIcon,
+    about: 'Create standard-compliant barcodes for inventory, retail, and logistics. Our tool supports a wide variety of formats, including CODE128, EAN-13, and UPC. You can customize the appearance and download a high-quality image of your barcode.',
+    howTo: [
+        { title: 'Enter Value', description: 'Input the data you want to encode into the barcode.' },
+        { title: 'Select Format', description: 'Choose the correct barcode symbology from the dropdown list (e.g., CODE128).' },
+        { title: 'Customize & Download', description: 'Adjust colors and dimensions as needed, then click "Download Barcode" to save it.' }
+    ],
+    features: [
+        { icon: DocumentTextIcon, title: 'Multiple Formats', description: 'Supports a wide range of popular barcode formats, including CODE128, EAN, UPC, and more.' },
+        { icon: PencilIcon, title: 'Full Customization', description: 'Control the barcode\'s width, height, and colors to fit your specific needs.' },
+        { icon: ShieldCheckIcon, title: 'Validation', description: 'The tool provides real-time feedback if the entered data is invalid for the selected barcode format.' }
+    ]
+  },
+  {
     path: '/utilities/word-counter',
     name: 'Word Counter',
     description: 'Count words, characters, and paragraphs in text.',
@@ -231,6 +346,25 @@ export const tools: Tool[] = [
       { icon: ClockIcon, title: '5-Second Challenge', description: 'Test your clicking prowess in a quick and standardized 5-second sprint.' },
       { icon: TrophyIcon, title: 'Instant Results & Ranking', description: 'Get your CPS score and a performance rank immediately after the test concludes.' },
       { icon: ArrowPathIcon, title: 'Unlimited Retries', description: 'Easily restart the test with a single click to try and beat your previous score.' }
+    ]
+  },
+  {
+    path: '/utilities/barcode-scanner',
+    name: 'Barcode & QR Code Scanner',
+    description: 'Scan and decode barcodes and QR codes using your camera or an image file.',
+    category: ToolCategory.UTILITY,
+    component: BarcodeScanner,
+    icon: BarcodeIcon,
+    about: 'A powerful tool to decode barcodes and QR codes instantly. Use your device\'s camera for real-time scanning or upload an image file. The scanner supports a wide variety of code formats, making it a versatile utility for checking product information, accessing URLs, and more.',
+    howTo: [
+        { title: 'Choose Scan Method', description: 'Select whether you want to use your device camera or upload an image file.' },
+        { title: 'Scan the Code', description: 'If using the camera, point it at a barcode or QR code. If uploading, select an image file containing a code.' },
+        { title: 'View & Copy Result', description: 'The decoded information will appear instantly, ready for you to copy to your clipboard.' }
+    ],
+    features: [
+        { icon: PhotoIcon, title: 'Camera & File Support', description: 'Scan codes in real-time with your camera or decode them from an uploaded image file.' },
+        { icon: RocketLaunchIcon, title: 'Fast & Accurate', description: 'Powered by an advanced scanning library for quick and reliable code detection.' },
+        { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Easily copy the scanned data to your clipboard for use in other applications.' }
     ]
   },
   {
@@ -356,11 +490,108 @@ export const tools: Tool[] = [
     ]
   },
   {
+    path: '/image/compress-jpg',
+    name: 'Compress JPG Image',
+    description: 'Reduce the file size of your JPG images with adjustable quality.',
+    category: ToolCategory.IMAGE,
+    component: CompressJPG,
+    icon: ArrowsPointingInIcon,
+    about: 'Our JPG Compressor allows you to reduce the file size of your JPEG images by adjusting the quality. It provides a live preview and shows the estimated file size, so you can find the perfect balance between size and quality. All compression is done in your browser for maximum privacy.',
+    howTo: [
+      { title: 'Upload Your JPG', description: 'Drag and drop or select a JPG/JPEG image file.' },
+      { title: 'Adjust Quality', description: 'Use the slider to set your desired quality level. A lower quality results in a smaller file size.' },
+      { title: 'Download Image', description: 'See the new file size and download your compressed image.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Client-Side Compression', description: 'Your images are processed securely in your browser and are never uploaded to a server.' },
+      { icon: PencilIcon, title: 'Adjustable Quality', description: 'A simple slider lets you control the compression level from 0 to 100.' },
+      { icon: PhotoIcon, title: 'Live Preview', description: 'Instantly see how the quality of your image changes as you adjust the compression.' },
+      { icon: DocumentTextIcon, title: 'File Size Comparison', description: 'Compare the original file size with the new, compressed size before downloading.' }
+    ]
+  },
+    {
+    path: '/image/compress-jpg-to-50kb',
+    name: 'Compress JPG to 50kb',
+    description: 'Quickly compress your JPG images to a file size of 50kb or less.',
+    category: ToolCategory.IMAGE,
+    component: CompressJPGTo50kb,
+    icon: ArrowsPointingInIcon,
+    about: 'This tool is designed to save you time by swiftly compressing your images to meet portal size limits of 50kb without hassle. Our advanced compression technology reduces file sizes while maintaining image quality, ensuring your compressed JPGs remain clear and vibrant.',
+    howTo: [
+      { title: 'Upload Your JPG', description: 'Drag and drop or select a JPG/JPEG image file.' },
+      { title: 'Automatic Compression', description: 'The tool automatically finds the best quality for a file size under 50kb.' },
+      { title: 'Download Image', description: 'Download your perfectly sized image with a single click.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Secure & Private', description: 'Our tool prioritizes the security and confidentiality of your images. All compression happens in your browser.' },
+      { icon: RocketLaunchIcon, title: 'Rapid Compression', description: 'This tool is designed to save you time, swiftly compressing images to meet portal size limits without hassle.' },
+      { icon: PhotoIcon, title: 'Quality Conscious', description: 'Our advanced compression technology finds the best quality possible for your target size, ensuring your JPGs remain clear and vibrant.' }
+    ]
+  },
+  {
+    path: '/image/compress-jpg-to-100kb',
+    name: 'Compress JPG to 100kb',
+    description: 'Quickly compress your JPG images to a file size of 100kb or less.',
+    category: ToolCategory.IMAGE,
+    component: CompressJPGTo100kb,
+    icon: ArrowsPointingInIcon,
+    about: 'This tool is designed to save you time by swiftly compressing your images to meet portal size limits of 100kb without hassle. Our advanced compression technology reduces file sizes while maintaining image quality, ensuring your compressed JPGs remain clear and vibrant.',
+    howTo: [
+      { title: 'Upload Your JPG', description: 'Drag and drop or select a JPG/JPEG image file.' },
+      { title: 'Automatic Compression', description: 'The tool automatically finds the best quality for a file size under 100kb.' },
+      { title: 'Download Image', description: 'Download your perfectly sized image with a single click.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Secure & Private', description: 'Our tool prioritizes the security and confidentiality of your images. All compression happens in your browser.' },
+      { icon: RocketLaunchIcon, title: 'Rapid Compression', description: 'This tool is designed to save you time, swiftly compressing images to meet portal size limits without hassle.' },
+      { icon: PhotoIcon, title: 'Quality Conscious', description: 'Our advanced compression technology finds the best quality possible for your target size, ensuring your JPGs remain clear and vibrant.' }
+    ]
+  },
+  {
+    path: '/image/compress-jpg-to-200kb',
+    name: 'Compress JPG to 200kb',
+    description: 'Quickly compress your JPG images to a file size of 200kb or less.',
+    category: ToolCategory.IMAGE,
+    component: CompressJPGTo200kb,
+    icon: ArrowsPointingInIcon,
+    about: 'This tool is designed to save you time by swiftly compressing your images to meet portal size limits of 200kb without hassle. Our advanced compression technology reduces file sizes while maintaining image quality, ensuring your compressed JPGs remain clear and vibrant.',
+    howTo: [
+      { title: 'Upload Your JPG', description: 'Drag and drop or select a JPG/JPEG image file.' },
+      { title: 'Automatic Compression', description: 'The tool automatically finds the best quality for a file size under 200kb.' },
+      { title: 'Download Image', description: 'Download your perfectly sized image with a single click.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Secure & Private', description: 'Our tool prioritizes the security and confidentiality of your images. All compression happens in your browser.' },
+      { icon: RocketLaunchIcon, title: 'Rapid Compression', description: 'This tool is designed to save you time, swiftly compressing images to meet portal size limits without hassle.' },
+      { icon: PhotoIcon, title: 'Quality Conscious', description: 'Our advanced compression technology finds the best quality possible for your target size, ensuring your JPGs remain clear and vibrant.' }
+    ]
+  },
+  {
+    path: '/image/increase-jpg-size',
+    name: 'Increase JPG Size',
+    description: 'Increase the file size of a JPG to meet minimum requirements.',
+    category: ToolCategory.IMAGE,
+    component: IncreaseJPGSize,
+    icon: ArrowTrendingUpIcon,
+    about: 'This tool helps you increase the file size of a JPG image, which can be useful for meeting minimum file size requirements for online submissions. It works by adding a small amount of invisible noise and re-saving the image at maximum quality, effectively "bloating" the file size.',
+    howTo: [
+      { title: 'Upload Your JPG', description: 'Drag and drop or select a JPG/JPEG image file.' },
+      { title: 'Set Bloat Level', description: 'Use the slider to control how much invisible noise is added. A higher level means a larger file size.' },
+      { title: 'Download Image', description: 'Download the new, larger JPG file.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Secure & Private', description: 'All processing happens in your browser. Your images are never uploaded.' },
+      { icon: ArrowTrendingUpIcon, title: 'File Size Control', description: 'Use a simple "Bloat Level" slider to increase the final file size.' },
+      { icon: DocumentTextIcon, title: 'Instant Size Update', description: 'See the new estimated file size as you adjust the settings.' },
+      { icon: PhotoIcon, title: 'Visually Lossless', description: 'The tool adds noise that is practically invisible, preserving the visual quality of your image.' }
+    ]
+  },
+  {
     path: '/generators/invoice-generator',
     name: 'Invoice Generator',
     description: 'Create and download professional invoices.',
     category: ToolCategory.GENERATOR,
-    component: PlaceholderToolPage,
+    component: InvoiceGenerator,
     icon: DocumentChartBarIcon,
     about: 'Our Invoice Generator makes creating professional invoices effortless. Customize templates, add your logo, calculate totals with taxes, and download print-ready PDFs. Perfect for freelancers and small businesses looking to streamline their billing process.',
     howTo: [
@@ -379,7 +610,7 @@ export const tools: Tool[] = [
     name: 'Preeti to Unicode',
     description: 'Convert Preeti font text to Nepali Unicode.',
     category: ToolCategory.CONVERTER,
-    component: PlaceholderToolPage,
+    component: PreetiToUnicode,
     icon: LanguageIcon,
     about: 'Easily convert traditional Preeti font text into standard Nepali Unicode. This tool is essential for modernizing old documents, ensuring web compatibility, and making your Nepali text searchable and universally accessible across all devices and platforms.',
     howTo: [
@@ -398,7 +629,7 @@ export const tools: Tool[] = [
     name: 'Word Case Converter',
     description: 'Convert text between different letter cases.',
     category: ToolCategory.CONVERTER,
-    component: PlaceholderToolPage,
+    component: WordCaseConverter,
     icon: CharacterSpacingIcon,
     about: 'The Word Case Converter tool allows you to easily transform the case of your text. With options for UPPERCASE, lowercase, Title Case, and Sentence case, it\'s perfect for editors, writers, and anyone who needs to quickly format their text for headlines, titles, or articles.',
     howTo: [

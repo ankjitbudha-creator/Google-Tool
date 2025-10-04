@@ -1,5 +1,7 @@
 {
   "name": "BabalTools: Online Tools Suite",
   "description": "A comprehensive collection of online tools including calculators, converters, generators, and utilities, designed for developers and everyday users. All tools are client-side and work offline.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "camera"
+  ]
 }

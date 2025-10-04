@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback, DragEvent } from 'react';
-import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon } from '../../Icons';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useImageHandler } from './shared/useImageHandler';
+import { ImageDropzone } from './shared/ImageDropzone';
+import { FileNameDisplay, MessageDisplay, ActionButtons, OutputSettings } from './shared/ImageToolControls';
 
 const MIN_CROP_SIZE = 20;
 const HANDLE_SIZE = 10;
@@ -17,16 +19,13 @@ interface Crop {
 }
 
 export const ImageCropper: React.FC = () => {
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [crop, setCrop] = useState<Crop>({ x: 20, y: 20, width: 200, height: 200 });
     const [aspect, setAspect] = useState<AspectRatio>('free');
     const [originalImageSize, setOriginalImageSize] = useState<{ width: number, height: number } | null>(null);
-    const [originalFileName, setOriginalFileName] = useState<string>('image');
-    const [message, setMessage] = useState<{ type: 'info' | 'success' | 'error', text: string } | null>(null);
-    const [isDraggingOver, setIsDraggingOver] = useState(false);
+    const [outputFormat, setOutputFormat] = useState<'jpeg' | 'png' | 'webp'>('png');
+    const [outputQuality, setOutputQuality] = useState(92);
     
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const imageRef = useRef<HTMLImageElement>(new Image());
     const interactionRef = useRef<{ 
         isDragging?: boolean; 
         isResizing?: ResizingCorner;
@@ -34,7 +33,32 @@ export const ImageCropper: React.FC = () => {
         startY: number;
         startCrop: Crop;
     } | null>(null);
-    
+
+    const onImageLoad = useCallback((img: HTMLImageElement) => {
+        setOriginalImageSize({ width: img.width, height: img.height });
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
+            const hRatio = canvasWidth / img.width;
+            const vRatio = canvasHeight / img.height;
+            const ratio = Math.min(hRatio, vRatio) * 0.8;
+            const initialWidth = img.width * ratio;
+            const initialHeight = img.height * ratio;
+            
+            setCrop({
+                width: initialWidth,
+                height: initialHeight,
+                x: (canvasWidth - initialWidth) / 2,
+                y: (canvasHeight - initialHeight) / 2,
+            });
+        }
+    }, []);
+
+    const { 
+        imageSrc, imageRef, originalFileName, message, setMessage, 
+        isDraggingOver, handleFileChange, handleReset: baseHandleReset, 
+        handleDragOver, handleDragLeave, handleDrop 
+    } = useImageHandler(onImageLoad);
 
     const drawCanvas = useCallback(() => {
         const canvas = canvasRef.current;
@@ -55,23 +79,18 @@ export const ImageCropper: React.FC = () => {
         const offsetY = (canvasHeight - scaledHeight) / 2;
 
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        
-        // 1. Draw the base image
         ctx.drawImage(image, offsetX, offsetY, scaledWidth, scaledHeight);
 
-        // 2. Draw the semi-transparent overlay outside the crop area
         ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         ctx.fillRect(0, 0, canvasWidth, crop.y);
         ctx.fillRect(0, crop.y + crop.height, canvasWidth, canvasHeight - (crop.y + crop.height));
         ctx.fillRect(0, crop.y, crop.x, crop.height);
         ctx.fillRect(crop.x + crop.width, crop.y, canvasWidth - (crop.x + crop.width), crop.height);
 
-        // 3. Draw the crop border
         ctx.strokeStyle = '#6366f1';
         ctx.lineWidth = 2;
         ctx.strokeRect(crop.x, crop.y, crop.width, crop.height);
         
-        // 4. Draw the corner handles
         ctx.fillStyle = '#6366f1';
         const halfHandle = HANDLE_SIZE / 2;
         ctx.fillRect(crop.x - halfHandle, crop.y - halfHandle, HANDLE_SIZE, HANDLE_SIZE);
@@ -79,11 +98,11 @@ export const ImageCropper: React.FC = () => {
         ctx.fillRect(crop.x - halfHandle, crop.y + crop.height - halfHandle, HANDLE_SIZE, HANDLE_SIZE);
         ctx.fillRect(crop.x + crop.width - halfHandle, crop.y + crop.height - halfHandle, HANDLE_SIZE, HANDLE_SIZE);
 
-    }, [crop]);
+    }, [crop, imageRef]);
 
     useEffect(() => {
         drawCanvas();
-    }, [drawCanvas]);
+    }, [drawCanvas, imageSrc]);
     
     useEffect(() => {
         if (!imageSrc) return;
@@ -121,48 +140,6 @@ export const ImageCropper: React.FC = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [drawCanvas]);
-    
-    const handleFileChange = (files: FileList | null) => {
-        if (files && files[0]) {
-            const file = files[0];
-            if (!file.type.startsWith('image/')) {
-                setMessage({ type: 'error', text: 'Please upload a valid image file.' });
-                return;
-            }
-
-            const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
-            setOriginalFileName(baseName.replace(/[^a-zA-Z0-9_-]/g, ''));
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = imageRef.current;
-                img.onload = () => {
-                    setOriginalImageSize({ width: img.width, height: img.height });
-                    
-                    const canvas = canvasRef.current;
-                    if (canvas) {
-                        const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
-                        const hRatio = canvasWidth / img.width;
-                        const vRatio = canvasHeight / img.height;
-                        const ratio = Math.min(hRatio, vRatio) * 0.8;
-                        const initialWidth = img.width * ratio;
-                        const initialHeight = img.height * ratio;
-                        
-                        setCrop({
-                            width: initialWidth,
-                            height: initialHeight,
-                            x: (canvasWidth - initialWidth) / 2,
-                            y: (canvasHeight - initialHeight) / 2,
-                        });
-                    }
-                    setImageSrc(e.target?.result as string);
-                };
-                img.src = e.target?.result as string;
-            };
-            reader.readAsDataURL(file);
-            setMessage(null);
-        }
-    };
     
     const getResizingCorner = (e: React.MouseEvent<HTMLCanvasElement>): ResizingCorner => {
         const { offsetX: x, offsetY: y } = e.nativeEvent;
@@ -202,11 +179,7 @@ export const ImageCropper: React.FC = () => {
         if (isDragging) {
             const dx = offsetX - startX;
             const dy = offsetY - startY;
-            setCrop(c => ({
-                ...c,
-                x: startCrop.x + dx,
-                y: startCrop.y + dy,
-            }));
+            setCrop(c => ({ ...c, x: startCrop.x + dx, y: startCrop.y + dy }));
             return;
         } 
         
@@ -221,9 +194,7 @@ export const ImageCropper: React.FC = () => {
             
             if (aspectRatioValue) {
                 const newHeight = width / aspectRatioValue;
-                if (isResizing.includes('t')) {
-                    y += height - newHeight;
-                }
+                if (isResizing.includes('t')) { y += height - newHeight; }
                 height = newHeight;
             } else {
                 if (isResizing.includes('b')) height += dy;
@@ -247,7 +218,6 @@ export const ImageCropper: React.FC = () => {
             setMessage({ type: 'error', text: 'Cannot crop without an image.' });
             return;
         }
-    
         const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
         const hRatio = canvasWidth / image.width;
         const vRatio = canvasHeight / image.height;
@@ -256,120 +226,77 @@ export const ImageCropper: React.FC = () => {
         const scaledHeight = image.height * ratio;
         const offsetX = (canvasWidth - scaledWidth) / 2;
         const offsetY = (canvasHeight - scaledHeight) / 2;
-    
         const scaleX = image.width / scaledWidth;
         const scaleY = image.height / scaledHeight;
-    
-        const cropRect = {
-            x: (crop.x - offsetX) * scaleX,
-            y: (crop.y - offsetY) * scaleY,
-            width: crop.width * scaleX,
-            height: crop.height * scaleY,
-        };
-    
+        const cropRect = { x: (crop.x - offsetX) * scaleX, y: (crop.y - offsetY) * scaleY, width: crop.width * scaleX, height: crop.height * scaleY };
         const imageRect = { x: 0, y: 0, width: image.width, height: image.height };
-    
         const intersection = {
             x: Math.max(cropRect.x, imageRect.x),
             y: Math.max(cropRect.y, imageRect.y),
-            width: 0,
-            height: 0,
+            width: Math.min(cropRect.x + cropRect.width, imageRect.x + imageRect.width) - Math.max(cropRect.x, imageRect.x),
+            height: Math.min(cropRect.y + cropRect.height, imageRect.y + imageRect.height) - Math.max(cropRect.y, imageRect.y),
         };
-        intersection.width = Math.min(cropRect.x + cropRect.width, imageRect.x + imageRect.width) - intersection.x;
-        intersection.height = Math.min(cropRect.y + cropRect.height, imageRect.y + imageRect.height) - intersection.y;
-    
         if (intersection.width <= 0 || intersection.height <= 0) {
-            setMessage({ type: 'error', text: 'Crop area is completely outside the image.' });
+            setMessage({ type: 'error', text: 'Crop area is outside the image.' });
             return;
         }
-    
         const cropCanvas = document.createElement('canvas');
         cropCanvas.width = Math.round(intersection.width);
         cropCanvas.height = Math.round(intersection.height);
         const ctx = cropCanvas.getContext('2d');
         if (!ctx) return;
-    
-        ctx.drawImage(
-            image,
-            Math.round(intersection.x),
-            Math.round(intersection.y),
-            Math.round(intersection.width),
-            Math.round(intersection.height),
-            0,
-            0,
-            Math.round(intersection.width),
-            Math.round(intersection.height)
-        );
-    
-        const link = document.createElement('a');
-        const token = Math.random().toString(36).substring(2, 8);
-        link.download = `BabalTools-${originalFileName}-cropped-${token}.png`;
-        link.href = cropCanvas.toDataURL('image/png');
-        link.click();
-        setMessage({ type: 'success', text: 'Image downloaded successfully!' });
+        ctx.drawImage(image, Math.round(intersection.x), Math.round(intersection.y), Math.round(intersection.width), Math.round(intersection.height), 0, 0, Math.round(intersection.width), Math.round(intersection.height));
+
+        const mimeType = `image/${outputFormat}`;
+        const qualityArg = (outputFormat === 'jpeg' || outputFormat === 'webp') ? outputQuality / 100 : undefined;
+        const fileExtension = outputFormat === 'jpeg' ? 'jpg' : outputFormat;
+
+        cropCanvas.toBlob((blob) => {
+            if (!blob) {
+                setMessage({ type: 'error', text: 'Failed to create image file.' });
+                return;
+            }
+            const link = document.createElement('a');
+            const token = Math.random().toString(36).substring(2, 8);
+            link.download = `BabalTools-${originalFileName}-cropped-${token}.${fileExtension}`;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            URL.revokeObjectURL(link.href);
+            setMessage({ type: 'success', text: 'Image downloaded successfully!' });
+        }, mimeType, qualityArg);
     };
 
     const handleReset = () => {
-      setImageSrc(null);
-      setOriginalImageSize(null);
-      setOriginalFileName('image');
-      setMessage(null);
-      setAspect('free');
-    };
-
-    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(true);
-    };
-
-    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(false);
-    };
-
-    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(false);
-        handleFileChange(e.dataTransfer.files);
+        baseHandleReset(() => {
+            setOriginalImageSize(null);
+            setAspect('free');
+            setOutputFormat('png');
+            setOutputQuality(92);
+        });
     };
     
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 relative min-h-[400px] md:min-h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                {imageSrc ? (
-                     <canvas
-                        ref={canvasRef}
-                        className="w-full h-full cursor-grab active:cursor-grabbing"
-                        onMouseDown={handleMouseDown}
-                        onMouseMove={handleMouseMove}
-                        onMouseUp={handleMouseUp}
-                        onMouseLeave={handleMouseUp}
-                    />
-                ) : (
-                    <div 
-                        className={`w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-300 ${isDraggingOver ? 'border-primary bg-indigo-50 dark:bg-slate-700/50' : 'border-gray-400 dark:border-gray-600'}`}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                    >
-                         <ArrowUpTrayIcon className="w-16 h-16 text-gray-400 mb-4" />
-                         <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
-                           {isDraggingOver ? "Drop image to upload" : "Drag & Drop or Click to Upload"}
-                         </h3>
-                         <p className="text-gray-500 dark:text-gray-400 mt-2">Supports JPG, PNG, GIF, WEBP</p>
-                         <input type="file" className="hidden" accept="image/*" onChange={e => handleFileChange(e.target.files)} id="fileUpload" />
-                         <button onClick={() => document.getElementById('fileUpload')?.click()} className="mt-4 px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-hover">
-                             Select Image
-                         </button>
-                    </div>
-                )}
-            </div>
+            <ImageDropzone 
+                imageSrc={imageSrc} 
+                isDraggingOver={isDraggingOver} 
+                onDragOver={handleDragOver} 
+                onDragLeave={handleDragLeave} 
+                onDrop={handleDrop} 
+                onFileChange={handleFileChange}
+            >
+                <canvas
+                    ref={canvasRef}
+                    className="w-full h-full cursor-grab active:cursor-grabbing"
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                />
+            </ImageDropzone>
 
             <div className="md:col-span-1 space-y-4">
-                 <div>
+                <div>
                     <h3 className="font-semibold mb-2 text-gray-800 dark:text-white px-4">Aspect Ratio</h3>
                     <div className="grid grid-cols-2 gap-2">
                         {(['1:1', '4:3', '16:9', 'free'] as AspectRatio[]).map(r => (
@@ -395,27 +322,25 @@ export const ImageCropper: React.FC = () => {
                         {!imageSrc && <p className="text-gray-500 dark:text-gray-400">Upload an image to see dimensions.</p>}
                     </div>
                  </div>
-                {originalFileName !== 'image' && (
-                    <div className="bg-white dark:bg-slate-700 p-4 rounded-lg shadow-sm">
-                        <h3 className="font-semibold mb-2 text-gray-800 dark:text-white">Selected File</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{originalFileName}</p>
-                    </div>
-                 )}
-                 <div className="space-y-2">
-                     <button onClick={handleCropDownload} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        <DocumentDuplicateIcon className="w-5 h-5" />
-                        Crop & Download
-                     </button>
-                     <button onClick={handleReset} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        <ArrowPathIcon className="w-5 h-5" />
-                        Reset / Change Image
-                     </button>
-                 </div>
-                  {message && (
-                    <div className={`p-3 rounded-md text-sm text-center ${message.type === 'success' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'}`}>
-                        {message.text}
-                    </div>
-                 )}
+                
+                <OutputSettings
+                    format={outputFormat}
+                    setFormat={setOutputFormat}
+                    quality={outputQuality}
+                    setQuality={setOutputQuality}
+                    disabled={!imageSrc}
+                />
+
+                <FileNameDisplay fileName={originalFileName} />
+                
+                <ActionButtons 
+                    onDownload={handleCropDownload}
+                    onReset={handleReset}
+                    isImageLoaded={!!imageSrc}
+                    downloadText="Crop & Download"
+                />
+                
+                <MessageDisplay message={message} />
             </div>
         </div>
     );

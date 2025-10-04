@@ -1,21 +1,29 @@
 "use client";
 
-import React, { useState, useRef, DragEvent, ChangeEvent, useMemo } from 'react';
-import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon, LockClosedIcon, LockOpenIcon } from '../../Icons';
+import React, { useState, useMemo } from 'react';
+import { LockClosedIcon, LockOpenIcon } from '../../Icons';
+import { useImageHandler } from './shared/useImageHandler';
+import { ImageDropzone } from './shared/ImageDropzone';
+import { FileNameDisplay, MessageDisplay, ActionButtons } from './shared/ImageToolControls';
+
+const MAX_DIMENSION = 10000;
 
 export const ImageResizer: React.FC = () => {
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [originalImageSize, setOriginalImageSize] = useState<{ width: number, height: number } | null>(null);
-    const [originalFileName, setOriginalFileName] = useState<string>('image');
-    
     const [dimensions, setDimensions] = useState({ width: '', height: '' });
     const [keepAspectRatio, setKeepAspectRatio] = useState(true);
     const [scaleMode, setScaleMode] = useState<'pixels' | 'percent'>('pixels');
 
-    const [message, setMessage] = useState<{ type: 'info' | 'success' | 'error', text: string } | null>(null);
-    const [isDraggingOver, setIsDraggingOver] = useState(false);
+    const onImageLoad = (img: HTMLImageElement) => {
+        setOriginalImageSize({ width: img.width, height: img.height });
+        setDimensions({ width: String(img.width), height: String(img.height) });
+    };
     
-    const imageRef = useRef<HTMLImageElement>(new Image());
+    const { 
+        imageSrc, imageRef, originalFileName, message, setMessage, 
+        isDraggingOver, handleFileChange, handleReset: baseHandleReset, 
+        handleDragOver, handleDragLeave, handleDrop 
+    } = useImageHandler(onImageLoad);
 
     const scalePercent = useMemo(() => {
         if (!originalImageSize || !dimensions.width) return '';
@@ -25,40 +33,17 @@ export const ImageResizer: React.FC = () => {
         return String(Math.round((numWidth / originalImageSize.width) * 100));
     }, [dimensions.width, originalImageSize]);
 
-    const handleFileChange = (files: FileList | null) => {
-        if (files && files[0]) {
-            const file = files[0];
-            if (!file.type.startsWith('image/')) {
-                setMessage({ type: 'error', text: 'Please upload a valid image file.' });
-                return;
-            }
-
-            const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
-            setOriginalFileName(baseName.replace(/[^a-zA-Z0-9_-]/g, ''));
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = imageRef.current;
-                img.onload = () => {
-                    setOriginalImageSize({ width: img.width, height: img.height });
-                    setDimensions({ width: String(img.width), height: String(img.height) });
-                    setImageSrc(e.target?.result as string);
-                };
-                img.src = e.target?.result as string;
-            };
-            reader.readAsDataURL(file);
-            setMessage(null);
-        }
-    };
-    
     const handleDimensionChange = (value: string, dimension: 'width' | 'height') => {
         if (!originalImageSize) return;
-        const numValue = parseInt(value, 10);
+        let numValue = parseInt(value, 10);
       
-        if (isNaN(numValue) || numValue < 0) {
-          setDimensions(d => ({ ...d, [dimension]: value === '' ? '' : d[dimension] }));
+        if (value === '') {
+          setDimensions(d => ({ ...d, [dimension]: '' }));
           return;
         }
+
+        if (isNaN(numValue) || numValue < 0) return;
+        if (numValue > MAX_DIMENSION) numValue = MAX_DIMENSION;
       
         if (keepAspectRatio) {
           if (dimension === 'width') {
@@ -83,8 +68,6 @@ export const ImageResizer: React.FC = () => {
         }
 
         if (numValue > 500) numValue = 500;
-      
-        // Percentage scaling implies aspect ratio is locked
         if (!keepAspectRatio) setKeepAspectRatio(true);
       
         const newWidth = Math.round(originalImageSize.width * (numValue / 100));
@@ -95,7 +78,6 @@ export const ImageResizer: React.FC = () => {
     const handleToggleAspectRatio = () => {
         const isLocking = !keepAspectRatio;
         setKeepAspectRatio(isLocking);
-
         if (isLocking && originalImageSize && dimensions.width) {
             handleDimensionChange(dimensions.width, 'width');
         }
@@ -109,6 +91,7 @@ export const ImageResizer: React.FC = () => {
     };
 
     const handleResizeDownload = () => {
+        // ... (download logic remains the same)
         const image = imageRef.current;
         const width = parseInt(dimensions.width, 10);
         const height = parseInt(dimensions.height, 10);
@@ -135,62 +118,26 @@ export const ImageResizer: React.FC = () => {
     };
 
     const handleReset = () => {
-      setImageSrc(null);
-      setOriginalImageSize(null);
-      setOriginalFileName('image');
-      setDimensions({ width: '', height: '' });
-      setScaleMode('pixels');
-      setKeepAspectRatio(true);
-      setMessage(null);
-    };
-
-    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(true);
-    };
-
-    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(false);
-    };
-
-    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDraggingOver(false);
-        handleFileChange(e.dataTransfer.files);
+        baseHandleReset(() => {
+            setOriginalImageSize(null);
+            setDimensions({ width: '', height: '' });
+            setScaleMode('pixels');
+            setKeepAspectRatio(true);
+        });
     };
     
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 relative min-h-[400px] md:min-h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden p-4">
-                {imageSrc ? (
-                     <img
-                        src={imageSrc}
-                        alt="Image preview"
-                        className="w-full h-full object-contain"
-                    />
-                ) : (
-                    <div 
-                        className={`w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-300 ${isDraggingOver ? 'border-primary bg-indigo-50 dark:bg-slate-700/50' : 'border-gray-400 dark:border-gray-600'}`}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                    >
-                         <ArrowUpTrayIcon className="w-16 h-16 text-gray-400 mb-4" />
-                         <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
-                           {isDraggingOver ? "Drop image to upload" : "Drag & Drop or Click to Upload"}
-                         </h3>
-                         <p className="text-gray-500 dark:text-gray-400 mt-2">Supports JPG, PNG, GIF, WEBP</p>
-                         <input type="file" className="hidden" accept="image/*" onChange={e => handleFileChange(e.target.files)} id="fileUpload" />
-                         <button onClick={() => document.getElementById('fileUpload')?.click()} className="mt-4 px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-hover">
-                             Select Image
-                         </button>
-                    </div>
-                )}
-            </div>
+            <ImageDropzone 
+                imageSrc={imageSrc} 
+                isDraggingOver={isDraggingOver} 
+                onDragOver={handleDragOver} 
+                onDragLeave={handleDragLeave} 
+                onDrop={handleDrop} 
+                onFileChange={handleFileChange}
+            >
+                <img src={imageSrc!} alt="Image preview" className="w-full h-full object-contain" />
+            </ImageDropzone>
 
             <div className="md:col-span-1 space-y-4">
                  <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 p-4 rounded-lg shadow-sm space-y-6">
@@ -207,7 +154,7 @@ export const ImageResizer: React.FC = () => {
                     </div>
 
                     {scaleMode === 'pixels' && (
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             <div className="flex items-end gap-2">
                                 <div className="flex-1">
                                     <label htmlFor="width" className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Width (px)</label>
@@ -223,8 +170,9 @@ export const ImageResizer: React.FC = () => {
                                     <input type="number" id="height" value={dimensions.height} onChange={e => handleDimensionChange(e.target.value, 'height')} disabled={!imageSrc} className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-light dark:bg-slate-700 disabled:bg-gray-200 dark:disabled:bg-slate-800/50" />
                                 </div>
                             </div>
+                             <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-1">Max dimension: {MAX_DIMENSION.toLocaleString()}px</p>
                             {originalImageSize && (
-                                <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-1">Original: {originalImageSize.width} x {originalImageSize.height}px</p>
+                                <p className="text-xs text-center text-gray-500 dark:text-gray-400">Original: {originalImageSize.width} x {originalImageSize.height}px</p>
                             )}
                         </div>
                     )}
@@ -252,27 +200,16 @@ export const ImageResizer: React.FC = () => {
                     )}
                 </div>
 
-                {originalFileName !== 'image' && (
-                    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 p-4 rounded-lg shadow-sm">
-                        <h3 className="font-semibold mb-2 text-gray-800 dark:text-white">Selected File</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{originalFileName}</p>
-                    </div>
-                 )}
-                 <div className="space-y-2">
-                     <button onClick={handleResizeDownload} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        <DocumentDuplicateIcon className="w-5 h-5" />
-                        Resize & Download
-                     </button>
-                     <button onClick={handleReset} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        <ArrowPathIcon className="w-5 h-5" />
-                        Reset / Change Image
-                     </button>
-                 </div>
-                  {message && (
-                    <div className={`p-3 rounded-md text-sm text-center ${message.type === 'success' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'}`}>
-                        {message.text}
-                    </div>
-                 )}
+                <FileNameDisplay fileName={originalFileName} />
+                 
+                <ActionButtons 
+                    onDownload={handleResizeDownload}
+                    onReset={handleReset}
+                    isImageLoaded={!!imageSrc}
+                    downloadText="Resize & Download"
+                />
+                  
+                <MessageDisplay message={message} />
             </div>
         </div>
     );

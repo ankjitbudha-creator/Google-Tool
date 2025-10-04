@@ -30,11 +30,18 @@
                 'float': 'float 6s ease-in-out infinite',
                 'float-delay-1': 'float 7s ease-in-out infinite 0.5s',
                 'float-delay-2': 'float 8s ease-in-out infinite 1s',
+                'shake': 'shake 0.5s ease-in-out',
             },
             keyframes: {
               float: {
                 '0%, 100%': { transform: 'translateY(0px)' },
                 '50%': { transform: 'translateY(-15px)' },
+              },
+              shake: {
+                '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
               }
             }
           },
@@ -53,6 +60,9 @@
   }
 }
 </script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/zxing-browser.min.js"></script>
 </head>
   <body class="bg-light dark:bg-slate-900">
     <div id="root"></div>

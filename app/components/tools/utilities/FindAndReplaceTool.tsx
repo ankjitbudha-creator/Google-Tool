@@ -9,11 +9,16 @@ export const FindAndReplaceTool: React.FC = () => {
   const [replaceText, setReplaceText] = useState('');
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [findError, setFindError] = useState(false);
   
   const [lastReplacedIndex, setLastReplacedIndex] = useState(-1);
 
   const handleReplaceAll = () => {
-    if (!findText) return;
+    if (!findText) {
+      setFindError(true);
+      setTimeout(() => setFindError(false), 500);
+      return;
+    }
     const flags = caseSensitive ? 'g' : 'gi';
     const regex = new RegExp(findText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), flags);
     setText(text.replace(regex, replaceText));
@@ -21,7 +26,11 @@ export const FindAndReplaceTool: React.FC = () => {
   };
   
   const handleReplaceOne = () => {
-    if (!findText) return;
+    if (!findText) {
+      setFindError(true);
+      setTimeout(() => setFindError(false), 500);
+      return;
+    }
     const flags = caseSensitive ? '' : 'i';
     const regex = new RegExp(findText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), flags);
     
@@ -38,7 +47,7 @@ export const FindAndReplaceTool: React.FC = () => {
       setText(newText);
       setLastReplacedIndex(matchIndex);
     } else {
-      setLastReplacedIndex(-1);
+      setLastReplacedIndex(-1); // Reset if no more matches found
     }
   };
 
@@ -83,7 +92,7 @@ export const FindAndReplaceTool: React.FC = () => {
         <input
           id="find-text"
           type="text"
-          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-light dark:bg-gray-700 text-gray-800 dark:text-white"
+          className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-light dark:bg-gray-700 text-gray-800 dark:text-white ${findError ? 'animate-shake border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
           value={findText}
           onChange={(e) => {
             setFindText(e.target.value);

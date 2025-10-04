@@ -1,24 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 export const BMICalculator: React.FC = () => {
   const [height, setHeight] = useState<string>('180');
   const [weight, setWeight] = useState<string>('75');
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
+  const [errors, setErrors] = useState({ height: '', weight: '' });
 
   const { bmi, category } = useMemo(() => {
     const h = parseFloat(height);
     const w = parseFloat(weight);
 
-    if (isNaN(h) || isNaN(w) || h <= 0 || w <= 0) {
+    if (isNaN(h) || isNaN(w) || h <= 0 || w <= 0 || errors.height || errors.weight) {
       return { bmi: null, category: 'N/A' };
     }
 
     let bmiValue: number;
     if (unitSystem === 'metric') {
-      // weight (kg) / [height (m)]^2
       bmiValue = w / Math.pow(h / 100, 2);
     } else {
-      // 703 x weight (lbs) / [height (in)]^2
       bmiValue = 703 * (w / Math.pow(h, 2));
     }
     
@@ -29,10 +28,33 @@ export const BMICalculator: React.FC = () => {
     else bmiCategory = 'Obese';
 
     return { bmi: bmiValue.toFixed(1), category: bmiCategory };
+  }, [height, weight, unitSystem, errors]);
+
+  useEffect(() => {
+    const h = parseFloat(height);
+    const w = parseFloat(weight);
+    const newErrors = { height: '', weight: '' };
+    
+    if (!isNaN(h)) {
+        if (unitSystem === 'metric') {
+            if (h < 50 || h > 250) newErrors.height = 'Range: 50-250 cm.';
+        } else {
+            if (h < 20 || h > 100) newErrors.height = 'Range: 20-100 in.';
+        }
+    }
+    if (!isNaN(w)) {
+        if (unitSystem === 'metric') {
+            if (w < 10 || w > 500) newErrors.weight = 'Range: 10-500 kg.';
+        } else {
+            if (w < 20 || w > 1100) newErrors.weight = 'Range: 20-1100 lbs.';
+        }
+    }
+    setErrors(newErrors);
   }, [height, weight, unitSystem]);
 
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
       <div>
         <div className="flex justify-center mb-4 rounded-lg bg-gray-200 dark:bg-gray-700 p-1">
           <button onClick={() => setUnitSystem('metric')} className={`w-full py-2 rounded-md transition ${unitSystem === 'metric' ? 'bg-indigo-600 text-white' : 'text-gray-600 dark:text-gray-300'}`}>Metric</button>
@@ -47,8 +69,9 @@ export const BMICalculator: React.FC = () => {
               type="number"
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="w-full px-3 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full px-3 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border rounded-md focus:outline-none focus:ring-2 ${errors.height ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500'}`}
             />
+            {errors.height && <p className="text-red-500 text-xs mt-1">{errors.height}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -58,8 +81,9 @@ export const BMICalculator: React.FC = () => {
               type="number"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="w-full px-3 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full px-3 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border rounded-md focus:outline-none focus:ring-2 ${errors.weight ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500'}`}
             />
+            {errors.weight && <p className="text-red-500 text-xs mt-1">{errors.weight}</p>}
           </div>
         </div>
       </div>

@@ -200,6 +200,12 @@ export const QrCodeIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+export const BarcodeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M4 4h2v16H4zM7 4h1v16H7zM9 4h2v16H9zM12 4h1v16h-1zM14 4h1v16h-1zM16 4h3v16h-3zM20 4h1v16h-1z" />
+    </svg>
+);
+
 export const LanguageIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />
@@ -208,7 +214,7 @@ export const LanguageIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export const CurrencyDollarIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 11.21 12.77 11 12 11h-1.23c-.47 0-.945-.146-1.32-.411l-.879-.659M12 6c-1.232 0-2.433.39-3.357 1.085l-.879.659c-1.171.879-1.171 2.303 0 3.182C8.464 11.609 9.23 12 10 12h1.23c.47 0 .945.146 1.32.411l.879.659c1.171.879 1.171 2.303 0 3.182C13.536 17.609 12.77 18 12 18H9" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 11.21 12.77 11 12 11h-1.23c-.47 0-.945-.146-1.32-.411l-.879-.659M12 6c-1.123 0-2.433.39-3.357 1.085l-.879.659c-1.171.879-1.171 2.303 0 3.182C8.464 11.609 9.23 12 10 12h1.23c.47 0 .945.146 1.32.411l.879.659c1.171.879 1.171 2.303 0 3.182C13.536 17.609 12.77 18 12 18H9" />
   </svg>
 );
 
@@ -268,6 +274,7 @@ export const ArrowsPointingOutIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+{/* FIX: Add missing icon exports */}
 export const LockClosedIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 0 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -302,5 +309,17 @@ export const IdentificationIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm0 0A5.25 5.25 0 0 0 12 5.25a5.25 5.25 0 0 0-3 9.75m3-9.75h.008v.008H12V5.25ZM9 18.75h6" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h12A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6Z" />
+    </svg>
+);
+
+export const ArrowsPointingInIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9V4.5M15 9h4.5M15 9l5.25-5.25M15 15v4.5M15 15h4.5M15 15l5.25 5.25" />
+    </svg>
+);
+
+export const ArrowTrendingUpIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.516l2.74-1.22m0 0-5.94-2.28m5.94 2.28L21 2.25" />
     </svg>
 );

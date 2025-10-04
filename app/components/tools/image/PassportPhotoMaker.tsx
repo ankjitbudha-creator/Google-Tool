@@ -1,10 +1,14 @@
 "use client";
-import React, { useState, useRef, DragEvent, useEffect, useCallback } from 'react';
-import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon } from '../../Icons';
 
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useImageHandler } from './shared/useImageHandler';
+import { ImageDropzone } from './shared/ImageDropzone';
+import { ActionButtons, MessageDisplay } from './shared/ImageToolControls';
+import { DocumentDuplicateIcon } from '../../Icons';
+
+// ... (constants and interfaces remain the same)
 interface Crop { x: number; y: number; width: number; height: number; }
 type ResizingCorner = 'tl' | 'tr' | 'bl' | 'br' | null;
-
 const PRESET_SIZES: { [key: string]: { width: number; height: number; unit: 'cm' | 'in' } } = {
     '3.5cm x 4.5cm': { width: 3.5, height: 4.5, unit: 'cm' },
     '2in x 2in': { width: 2, height: 2, unit: 'in' },
@@ -13,18 +17,14 @@ const DPI = 300;
 const HANDLE_SIZE = 10;
 const MIN_CROP_SIZE = 30;
 
+
 export const PassportPhotoMaker: React.FC = () => {
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
-    const [originalFileName, setOriginalFileName] = useState<string>('image');
     const [crop, setCrop] = useState<Crop>({ x: 50, y: 50, width: 200, height: 250 });
     const [filters, setFilters] = useState({ brightness: 100, contrast: 100, saturation: 100 });
     const [bgColor, setBgColor] = useState('#ffffff');
     const [outputSize, setOutputSize] = useState('3.5cm x 4.5cm');
-    const [message, setMessage] = useState<{ type: 'info' | 'success' | 'error', text: string } | null>(null);
-    const [isDraggingOver, setIsDraggingOver] = useState(false);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const imageRef = useRef<HTMLImageElement>(new Image());
     const interactionRef = useRef<{ isDragging?: boolean; isResizing?: ResizingCorner; startX: number; startY: number; startCrop: Crop; } | null>(null);
 
     const getAspectRatio = useCallback(() => {
@@ -32,6 +32,32 @@ export const PassportPhotoMaker: React.FC = () => {
         return preset.width / preset.height;
     }, [outputSize]);
 
+    const onImageLoad = useCallback((img: HTMLImageElement) => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
+            const hRatio = canvasWidth / img.width;
+            const vRatio = canvasHeight / img.height;
+            const ratio = Math.min(hRatio, vRatio) * 0.8;
+            const initialWidth = img.width * ratio;
+            const initialHeight = initialWidth / getAspectRatio();
+            
+            setCrop({
+                width: initialWidth,
+                height: initialHeight,
+                x: (canvasWidth - initialWidth) / 2,
+                y: (canvasHeight - initialHeight) / 2,
+            });
+        }
+    }, [getAspectRatio]);
+    
+    const { 
+        imageSrc, imageRef, originalFileName, message, setMessage, 
+        isDraggingOver, handleFileChange, handleReset: baseHandleReset, 
+        handleDragOver, handleDragLeave, handleDrop 
+    } = useImageHandler(onImageLoad);
+
+    // ... (drawCanvas, mouse handlers, download logic remain the same, just remove state logic already in hook)
     const drawCanvas = useCallback(() => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d');
@@ -85,7 +111,7 @@ export const PassportPhotoMaker: React.FC = () => {
         ctx.fillRect(crop.x - halfHandle, crop.y + crop.height - halfHandle, HANDLE_SIZE, HANDLE_SIZE);
         ctx.fillRect(crop.x + crop.width - halfHandle, crop.y + crop.height - halfHandle, HANDLE_SIZE, HANDLE_SIZE);
 
-    }, [crop, filters, bgColor]);
+    }, [crop, filters, bgColor, imageRef]);
 
     useEffect(() => {
         if (imageSrc) drawCanvas();
@@ -99,42 +125,9 @@ export const PassportPhotoMaker: React.FC = () => {
             return { ...c, height: newHeight };
         });
     }, [outputSize, imageSrc, getAspectRatio]);
-    
-    const handleFileChange = (files: FileList | null) => {
-        if (files && files[0]) {
-            const file = files[0];
-            const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
-            setOriginalFileName(baseName.replace(/[^a-zA-Z0-9_-]/g, ''));
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imageRef.current.onload = () => {
-                    const img = imageRef.current;
-                    const canvas = canvasRef.current;
-                    if (canvas) {
-                        const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
-                        const hRatio = canvasWidth / img.width;
-                        const vRatio = canvasHeight / img.height;
-                        const ratio = Math.min(hRatio, vRatio) * 0.8;
-                        const initialWidth = img.width * ratio;
-                        const initialHeight = initialWidth / getAspectRatio();
-                        
-                        setCrop({
-                            width: initialWidth,
-                            height: initialHeight,
-                            x: (canvasWidth - initialWidth) / 2,
-                            y: (canvasHeight - initialHeight) / 2,
-                        });
-                    }
-                    setImageSrc(e.target?.result as string);
-                };
-                imageRef.current.src = e.target?.result as string;
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        // ...
         const { offsetX, offsetY } = e.nativeEvent;
         const getResizingCorner = (): ResizingCorner => {
             const { offsetX: x, offsetY: y } = e.nativeEvent;
@@ -155,6 +148,7 @@ export const PassportPhotoMaker: React.FC = () => {
     };
     
     const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+        // ...
         if (!interactionRef.current) return;
         const { isDragging, isResizing, startX, startY, startCrop } = interactionRef.current;
         const { offsetX, offsetY } = e.nativeEvent;
@@ -189,6 +183,7 @@ export const PassportPhotoMaker: React.FC = () => {
     const handleMouseUp = () => { interactionRef.current = null; };
 
     const handleDownload = async (sheetType: 'single' | 'A4') => {
+        //...
         const image = imageRef.current;
         const canvas = canvasRef.current;
         if (!image.src || !canvas) return;
@@ -229,12 +224,13 @@ export const PassportPhotoMaker: React.FC = () => {
             crop.height * scaleY,
             0, 0, finalWidth, finalHeight
         );
-
+        
         const token = Math.random().toString(36).substring(2, 8);
         const link = document.createElement('a');
+        const action = sheetType === 'single' ? 'passport' : 'passport-sheet';
 
         if (sheetType === 'single') {
-            link.download = `BabalTools-${originalFileName}-passport-${token}.png`;
+            link.download = `BabalTools-${originalFileName}-${action}-${token}.png`;
             link.href = finalCanvas.toDataURL('image/png');
             link.click();
         } else {
@@ -262,7 +258,7 @@ export const PassportPhotoMaker: React.FC = () => {
                 x = margin;
                 y += finalHeight + spacing;
             }
-            link.download = `BabalTools-${originalFileName}-passport-sheet-${token}.png`;
+            link.download = `BabalTools-${originalFileName}-${action}-${token}.png`;
             link.href = sheetCanvas.toDataURL('image/png');
             link.click();
         }
@@ -270,33 +266,27 @@ export const PassportPhotoMaker: React.FC = () => {
     };
 
     const handleReset = () => {
-        setImageSrc(null);
-        setOriginalFileName('image');
-        setFilters({ brightness: 100, contrast: 100, saturation: 100 });
-        setBgColor('#ffffff');
+        baseHandleReset(() => {
+            setFilters({ brightness: 100, contrast: 100, saturation: 100 });
+            setBgColor('#ffffff');
+        });
     };
     
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           <div className="md:col-span-2 relative min-h-[400px] md:min-h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-               {imageSrc ? (
-                   <canvas ref={canvasRef} className="w-full h-full" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} />
-               ) : (
-                   <div 
-                       className={`w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 text-center transition-colors ${isDraggingOver ? 'border-primary' : 'border-gray-400'}`}
-                       onDragOver={(e) => {e.preventDefault(); setIsDraggingOver(true);}}
-                       onDragLeave={() => setIsDraggingOver(false)}
-                       onDrop={(e) => {e.preventDefault(); setIsDraggingOver(false); handleFileChange(e.dataTransfer.files);}}
-                   >
-                        <ArrowUpTrayIcon className="w-16 h-16 text-gray-400 mb-4" />
-                        <h3 className="text-xl font-semibold">Upload Your Photo</h3>
-                        <input type="file" className="hidden" accept="image/*" onChange={e => handleFileChange(e.target.files)} id="fileUpload" />
-                        <button onClick={() => document.getElementById('fileUpload')?.click()} className="mt-4 px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-hover">
-                            Select Image
-                        </button>
-                   </div>
-               )}
-           </div>
+           {/* FIX: Correctly pass props to ImageDropzone instead of using incorrect spread syntax */}
+           <ImageDropzone 
+                imageSrc={imageSrc}
+                isDraggingOver={isDraggingOver}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onFileChange={handleFileChange}
+                promptText="Upload Your Photo"
+           >
+                <canvas ref={canvasRef} className="w-full h-full" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} />
+           </ImageDropzone>
+           
            <div className="md:col-span-1 space-y-4">
                 <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm space-y-4 border border-slate-200 dark:border-slate-700">
                     <h3 className="font-semibold text-lg border-b dark:border-slate-600 pb-2 mb-3">Controls</h3>
@@ -325,18 +315,21 @@ export const PassportPhotoMaker: React.FC = () => {
                         <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} className="w-full mt-1 h-10 p-1 border rounded-md dark:bg-slate-700 dark:border-slate-600" disabled={!imageSrc} />
                     </div>
                 </div>
-                <div className="space-y-2">
+
+                <ActionButtons 
+                    onDownload={() => {}} // dummy, buttons are custom here
+                    onReset={handleReset}
+                    isImageLoaded={!!imageSrc}
+                >
                     <button onClick={() => handleDownload('single')} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
                        <DocumentDuplicateIcon className="w-5 h-5" /> Download Single
                     </button>
                     <button onClick={() => handleDownload('A4')} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
                        <DocumentDuplicateIcon className="w-5 h-5" /> Download A4 Sheet
                     </button>
-                    <button onClick={handleReset} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                       <ArrowPathIcon className="w-5 h-5" /> Reset
-                    </button>
-                </div>
-                {message && <p className={`text-sm text-center p-2 rounded-md ${message.type === 'success' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200' : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200'}`}>{message.text}</p>}
+                </ActionButtons>
+
+                <MessageDisplay message={message} />
            </div>
        </div>
    );
