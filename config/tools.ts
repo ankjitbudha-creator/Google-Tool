@@ -10,6 +10,7 @@ import { MD5Generator } from '../pages/generators/MD5Generator';
 import { RandomNumberGenerator } from '../pages/generators/RandomNumberGenerator';
 import { LoremGenerator } from '../pages/generators/LoremGenerator';
 import { WordCounter } from '../pages/utilities/WordCounter';
+import { TextSorter } from '../pages/utilities/TextSorter';
 import { FindAndReplaceTool } from '../pages/utilities/FindAndReplaceTool';
 import { CPSTest } from '../pages/utilities/CPSTest';
 import { ImageCropper } from '../pages/image/ImageCropper';
@@ -29,6 +30,23 @@ import { WordCaseConverter } from '../pages/converters/WordCaseConverter';
 import { QRCodeGenerator } from '../pages/generators/QRCodeGenerator';
 import { BarcodeGenerator } from '../pages/generators/BarcodeGenerator';
 import { BarcodeScanner } from '../pages/utilities/BarcodeScanner';
+import { JpgToPdfConverter } from '../pages/pdf/JpgToPdfConverter';
+import { PdfToImagesConverter } from '../pages/pdf/PdfToImagesConverter';
+import { PdfToWordConverter } from '../pages/pdf/PdfToWordConverter';
+import { WebOptimizePdf } from '../pages/pdf/WebOptimizePdf';
+import { MergePdf } from '../pages/pdf/MergePdf';
+import { SplitPdf } from '../pages/pdf/SplitPdf';
+import { SignPdf } from '../pages/pdf/SignPdf';
+import { DateCalculator } from '../pages/calculators/DateCalculator';
+import { TimeCalculator } from '../pages/calculators/TimeCalculator';
+import { HoursCalculator } from '../pages/calculators/HoursCalculator';
+import { TimeCardCalculator } from '../pages/calculators/TimeCardCalculator';
+import { TimeZoneConverter } from '../pages/converters/TimeZoneConverter';
+import { TimeDurationCalculator } from '../pages/calculators/TimeDurationCalculator';
+import { DayCounter } from '../pages/calculators/DayCounter';
+import { DayOfTheWeekCalculator } from '../pages/calculators/DayOfTheWeekCalculator';
+import { FlashCardMaker } from '../pages/utilities/FlashCardMaker';
+import { InfoCardMaker } from '../pages/generators/InfoCardMaker';
 import { 
   CalculatorIcon, ScaleIcon, KeyIcon,
   DocumentTextIcon, CakeIcon, ArrowsRightLeftIcon, 
@@ -59,7 +77,12 @@ import {
   ArrowTrendingUpIcon,
   RocketLaunchIcon,
   QrCodeIcon,
-  BarcodeIcon
+  BarcodeIcon,
+  WrenchScrewdriverIcon,
+  DocumentArrowUpIcon,
+  DocumentArrowDownIcon,
+  DocumentPlusIcon,
+  ScissorsIcon
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -121,6 +144,126 @@ export const tools: Tool[] = [
     ]
   },
   {
+    path: '/calculators/date-calculator',
+    name: 'Date Calculator',
+    description: 'Add or subtract days, weeks, months, or years from a date.',
+    category: ToolCategory.CALCULATOR,
+    component: DateCalculator,
+    icon: CalendarDaysIcon,
+    about: 'The Date Calculator allows you to add or subtract time from a specific date, making it easy to calculate future or past dates. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Select a start date.' },
+      { title: 'Coming Soon', description: 'Choose to add or subtract time.' },
+      { title: 'Coming Soon', description: 'Enter the amount of days, weeks, months, or years.' },
+      { title: 'Coming Soon', description: 'View the resulting date.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side Date Calculator tool.' },
+    ]
+  },
+  {
+    path: '/calculators/time-calculator',
+    name: 'Time Calculator',
+    description: 'Add or subtract time units (hours, minutes, seconds).',
+    category: ToolCategory.CALCULATOR,
+    component: TimeCalculator,
+    icon: ClockIcon,
+    about: 'The Time Calculator lets you perform arithmetic operations on time values. You can add or subtract hours, minutes, and seconds. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Enter a starting time.' },
+      { title: 'Coming Soon', description: 'Choose to add or subtract.' },
+      { title: 'Coming Soon', description: 'Enter the time value to calculate.' },
+      { title: 'Coming Soon', description: 'See the resulting time.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side Time Calculator tool.' },
+    ]
+  },
+  {
+    path: '/calculators/hours-calculator',
+    name: 'Hours Calculator',
+    description: 'Calculate the total hours between two times.',
+    category: ToolCategory.CALCULATOR,
+    component: HoursCalculator,
+    icon: ClockIcon,
+    about: 'The Hours Calculator determines the total number of hours and minutes between two specified times, which can span across different days. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Enter a start time and date.' },
+      { title: 'Coming Soon', description: 'Enter an end time and date.' },
+      { title: 'Coming Soon', description: 'View the total hours and minutes calculated.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+    ]
+  },
+  {
+    path: '/calculators/time-card-calculator',
+    name: 'Time Card Calculator',
+    description: 'Calculate weekly hours and pay for a time card.',
+    category: ToolCategory.CALCULATOR,
+    component: TimeCardCalculator,
+    icon: CurrencyDollarIcon,
+    about: 'The Time Card Calculator helps you compute your weekly work hours and gross pay based on start and end times for each day, including breaks. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Enter your hourly wage.' },
+      { title: 'Coming Soon', description: 'Fill in your start time, end time, and break duration for each day.' },
+      { title: 'Coming Soon', description: 'View the total hours worked and your gross pay.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+    ]
+  },
+  {
+    path: '/calculators/time-duration-calculator',
+    name: 'Time Duration Calculator',
+    description: 'Calculate the duration between two dates and times.',
+    category: ToolCategory.CALCULATOR,
+    component: TimeDurationCalculator,
+    icon: ClockIcon,
+    about: 'Calculate the total time duration between a start date/time and an end date/time, broken down into years, months, days, hours, minutes, and seconds. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Enter the start date and time.' },
+      { title: 'Coming Soon', description: 'Enter the end date and time.' },
+      { title: 'Coming Soon', description: 'View the detailed time duration.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+    ]
+  },
+  {
+    path: '/calculators/day-counter',
+    name: 'Day Counter',
+    description: 'Count the number of days between two dates.',
+    category: ToolCategory.CALCULATOR,
+    component: DayCounter,
+    icon: CalendarDaysIcon,
+    about: 'The Day Counter calculates the exact number of days between two given dates. You can also choose to include or exclude the end day. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Select a start date.' },
+      { title: 'Coming Soon', description: 'Select an end date.' },
+      { title: 'Coming Soon', description: 'View the total number of days between the dates.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+    ]
+  },
+  {
+    path: '/calculators/day-of-the-week-calculator',
+    name: 'Day of the Week Calculator',
+    description: 'Find the day of the week for any given date.',
+    category: ToolCategory.CALCULATOR,
+    component: DayOfTheWeekCalculator,
+    icon: CalendarDaysIcon,
+    about: 'Quickly find out the day of the week (Monday, Tuesday, etc.) for any date in the past, present, or future. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Enter any date (day, month, year).' },
+      { title: 'Coming Soon', description: 'View the corresponding day of the week.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+    ]
+  },
+  {
     path: '/converters/unit',
     name: 'Unit Converter',
     description: 'Convert various units of measurement.',
@@ -177,6 +320,23 @@ export const tools: Tool[] = [
     ]
   },
   {
+    path: '/converters/time-zone-converter',
+    name: 'Time Zone Converter',
+    description: 'Convert times between different time zones.',
+    category: ToolCategory.CONVERTER,
+    component: TimeZoneConverter,
+    icon: ArrowsRightLeftIcon,
+    about: 'The Time Zone Converter allows you to find the corresponding time in different cities and time zones around the world. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Select a date and time in your local time zone.' },
+      { title: 'Coming Soon', description: 'Add one or more other time zones.' },
+      { title: 'Coming Soon', description: 'View the converted times instantly.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+    ]
+  },
+  {
     path: '/generators/password',
     name: 'Password Generator',
     description: 'Generate strong and secure random passwords.',
@@ -193,6 +353,27 @@ export const tools: Tool[] = [
         { icon: KeyIcon, title: 'Customizable Options', description: 'Control the length and character set of your password for any security requirement.' },
         { icon: ShieldCheckIcon, title: 'Strength Indicator', description: 'Visually assess the strength of your password to ensure it is secure enough.' },
         { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Quickly copy the generated password to your clipboard, making it easy to use immediately.' }
+    ]
+  },
+  {
+    path: '/generators/infocard-maker',
+    name: 'InfoCard Maker',
+    description: 'Create modern, professional information cards for social profiles or business contacts.',
+    category: ToolCategory.GENERATOR,
+    component: InfoCardMaker,
+    icon: IdentificationIcon,
+    about: 'Design and generate beautiful, personalized info cards. Perfect for social media bios, contact information, or digital business cards. Customize colors, fonts, and social links to create a card that truly represents you.',
+    howTo: [
+      { title: 'Upload Your Photo', description: 'Start by uploading a profile picture for your card.' },
+      { title: 'Fill in Details', description: 'Add your name, title, bio, and social media links.' },
+      { title: 'Customize Style', description: 'Choose your preferred colors and font to match your personal brand.' },
+      { title: 'Download Card', description: 'Click the download button to save your custom info card as a high-quality PNG image.' }
+    ],
+    features: [
+      { icon: PencilIcon, title: 'Full Customization', description: 'Control every aspect of your card, from colors and fonts to social links and bio.' },
+      { icon: PhotoIcon, title: 'Live Preview', description: 'See your changes in real-time as you design your perfect info card.' },
+      { icon: UsersIcon, title: 'Social Integration', description: 'Easily add links to your website, GitHub, Twitter (X), and LinkedIn profiles with icons.' },
+      { icon: DocumentDuplicateIcon, title: 'High-Quality PNG', description: 'Download your final creation as a high-resolution PNG, ready for use anywhere.' }
     ]
   },
   {
@@ -311,6 +492,27 @@ export const tools: Tool[] = [
     ]
   },
   {
+    path: '/utilities/text-sorter',
+    name: 'Text Sorter',
+    description: 'Sort lines or words of text alphabetically, in reverse, or randomly.',
+    category: ToolCategory.UTILITY,
+    component: TextSorter,
+    icon: ArrowsUpDownIcon,
+    about: 'The Text Sorter is a handy utility for organizing your text-based data. You can sort lists, paragraphs, or any text by lines or by individual words. It supports alphabetical (A-Z), reverse alphabetical (Z-A), reverse order, and random shuffling. A case-sensitive option provides more granular control over your sorting.',
+    howTo: [
+        { title: 'Paste Your Text', description: 'Enter or paste the text you want to sort into the input box.' },
+        { title: 'Choose Options', description: 'Select whether to sort by lines or words, and if the sort should be case-sensitive.' },
+        { title: 'Apply Sorting', description: 'Click one of the sorting buttons (e.g., "Sort A-Z", "Reverse") to process your text.' },
+        { title: 'Copy Result', description: 'Your sorted text will appear in the output box, ready to be copied.' }
+    ],
+    features: [
+        { icon: ArrowsUpDownIcon, title: 'Multiple Sort Modes', description: 'Sort alphabetically, reverse alphabetically, reverse the order, or shuffle randomly.' },
+        { icon: CharacterSpacingIcon, title: 'Sort by Lines or Words', description: 'Flexibly organize your text either line by line or word by word.' },
+        { icon: PencilIcon, title: 'Case-Sensitive Sorting', description: 'Enable case-sensitive sorting for more precise control over the results.' },
+        { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Easily copy the sorted text to your clipboard for use in other applications.' }
+    ]
+  },
+  {
     path: '/utilities/find-and-replace',
     name: 'Find and Replace Tool',
     description: 'Find and replace text quickly.',
@@ -366,6 +568,26 @@ export const tools: Tool[] = [
         { icon: PhotoIcon, title: 'Camera & File Support', description: 'Scan codes in real-time with your camera or decode them from an uploaded image file.' },
         { icon: RocketLaunchIcon, title: 'Fast & Accurate', description: 'Powered by an advanced scanning library for quick and reliable code detection.' },
         { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Easily copy the scanned data to your clipboard for use in other applications.' }
+    ]
+  },
+  {
+    path: '/utilities/flashcard-maker',
+    name: 'Flashcard Maker',
+    description: 'Create, manage, and study custom decks of digital flashcards.',
+    category: ToolCategory.UTILITY,
+    component: FlashCardMaker,
+    icon: DocumentDuplicateIcon,
+    about: 'A modern tool for creating and studying digital flashcards. Save multiple decks, add cards with front and back content, and enter a focused study mode with shuffle functionality. All data is saved in your browser, so your work is never lost.',
+    howTo: [
+      { title: 'Create a Deck', description: 'Enter a name for your new deck in the input field and click "Create". Your new deck will appear in the list.' },
+      { title: 'Add Cards', description: 'Click the "Edit" button on a deck. Use the form to add the front and back text for each card. The deck saves automatically as you add cards.' },
+      { title: 'Study Your Deck', description: 'Click the "Study" button to enter a focused learning mode. Click the card to flip it, use the next/prev buttons to navigate, or shuffle the deck for a random order.' }
+    ],
+    features: [
+      { icon: DocumentDuplicateIcon, title: 'Multiple Decks', description: 'Organize your learning by creating and managing an unlimited number of flashcard decks.' },
+      { icon: ShieldCheckIcon, title: 'Browser Storage', description: 'Your decks and cards are automatically saved in your browser\'s local storage, ensuring your data is private and persistent.' },
+      { icon: PlayIcon, title: 'Interactive Study Mode', description: 'Engage with your material in a clean, focused study interface with smooth 3D flip animations.' },
+      { icon: ArrowPathIcon, title: 'Shuffle Functionality', description: 'Randomize the order of your cards with a single click to challenge your memory and prevent rote learning.' }
     ]
   },
   {
@@ -643,5 +865,140 @@ export const tools: Tool[] = [
         { icon: PlayIcon, title: 'Instant Conversion', description: 'See your text transform in real-time as you select different case options.' },
         { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Effortlessly copy the formatted text to your clipboard.' }
     ],
+  },
+  {
+    path: '/pdf/jpg-to-pdf',
+    name: 'JPG to PDF Converter',
+    description: 'Combine multiple JPG images into a single PDF file.',
+    category: ToolCategory.PDF,
+    component: JpgToPdfConverter,
+    icon: DocumentArrowUpIcon,
+    about: 'Our JPG to PDF Converter allows you to easily merge multiple JPG images into one PDF document. You can reorder images, choose page sizes, and set orientations before creating your PDF. It\'s a fast, client-side tool that respects your privacy.',
+    howTo: [
+      { title: 'Upload Images', description: 'Click to select or drag and drop your JPG files into the upload area.' },
+      { title: 'Arrange & Configure', description: 'Reorder the images as you like. Select the page size and orientation for your PDF.' },
+      { title: 'Generate PDF', description: 'Click the "Generate PDF" button to combine your images into a single PDF file, which will be downloaded automatically.' }
+    ],
+    features: [
+      { icon: ArrowUpTrayIcon, title: 'Multiple File Upload', description: 'Upload and convert several JPG images at once.' },
+      { icon: ArrowsUpDownIcon, title: 'Image Reordering', description: 'Easily re-arrange the order of your images before converting to get the perfect sequence.' },
+      { icon: PencilIcon, title: 'Page Customization', description: 'Choose from standard page sizes (like A4, Letter) and set the page orientation (Portrait or Landscape).' },
+      { icon: ShieldCheckIcon, title: 'Client-Side & Secure', description: 'All processing is done in your browser. Your images are never sent to a server.' }
+    ]
+  },
+  {
+    path: '/pdf/pdf-to-images',
+    name: 'PDF to Images Converter',
+    description: 'Convert each page of a PDF document into separate image files.',
+    category: ToolCategory.PDF,
+    component: PdfToImagesConverter,
+    icon: PhotoIcon,
+    about: 'Extract pages from a PDF document and save them as high-quality images. Our PDF to Images Converter lets you choose the output format (PNG or JPG) and select which pages to convert. It\'s a perfect tool for when you need to use PDF content in presentations, web pages, or social media.',
+    howTo: [
+      { title: 'Upload PDF', description: 'Select a PDF file from your device.' },
+      { title: 'Select Pages & Format', description: 'Preview all pages and select the ones you want to convert. Choose your desired image format (PNG/JPG) and quality.' },
+      { title: 'Convert & Download', description: 'Click the convert button. The selected pages will be downloaded as individual image files.' }
+    ],
+    features: [
+      { icon: DocumentTextIcon, title: 'Page-by-Page Conversion', description: 'Convert an entire PDF or select specific pages to turn into images.' },
+      { icon: PhotoIcon, title: 'Multiple Formats', description: 'Choose to save your images as PNG for quality or JPG for smaller file sizes.' },
+      { icon: PencilSquareIcon, title: 'Quality Control', description: 'Adjust the quality of JPG images to balance file size and visual fidelity.' },
+      { icon: RocketLaunchIcon, title: 'Fast & In-Browser', description: 'Your PDF is processed quickly and securely right in your web browser.' }
+    ]
+  },
+  {
+    path: '/pdf/pdf-to-word',
+    name: 'PDF to Word Converter',
+    description: 'Convert PDF files to editable Word documents.',
+    category: ToolCategory.PDF,
+    component: PdfToWordConverter,
+    icon: DocumentArrowDownIcon,
+    about: 'This tool will allow you to convert your PDF documents into editable Microsoft Word (.docx) files, preserving the layout and formatting as much as possible. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Upload your PDF file.' },
+      { title: 'Coming Soon', description: 'The tool will process the file and create a Word document.' },
+      { title: 'Coming Soon', description: 'Download the converted .docx file.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side PDF to Word conversion tool.' },
+      { icon: DocumentTextIcon, title: 'Editable Documents', description: 'Once launched, you will be able to edit your PDF content easily in Microsoft Word.' },
+      { icon: ShieldCheckIcon, title: 'Privacy Focused', description: 'Like our other tools, this will be a fully client-side converter.' }
+    ]
+  },
+  {
+    path: '/pdf/web-optimize-pdf',
+    name: 'Web Optimize PDF',
+    description: 'Compress and optimize PDF files for web and email.',
+    category: ToolCategory.PDF,
+    component: WebOptimizePdf,
+    icon: WrenchScrewdriverIcon,
+    about: 'Reduce the file size of your PDF documents to make them easier to share via email or post on the web. This tool will offer various compression levels to balance file size and quality. This feature is coming soon.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Upload the PDF file you want to compress.' },
+      { title: 'Coming Soon', description: 'Choose a compression level (e.g., high, medium, low).' },
+      { title: 'Coming Soon', description: 'Download your optimized, smaller PDF file.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are building a powerful PDF optimization tool that runs entirely in your browser.' },
+      { icon: ArrowsPointingInIcon, title: 'Significant Size Reduction', description: 'Will help you shrink large PDFs without a major loss in quality.' },
+      { icon: RocketLaunchIcon, title: 'Faster Sharing', description: 'Optimized PDFs are quicker to upload, download, and send.' }
+    ]
+  },
+  {
+    path: '/pdf/merge-pdf',
+    name: 'Merge PDF',
+    description: 'Combine multiple PDF documents into a single file.',
+    category: ToolCategory.PDF,
+    component: MergePdf,
+    icon: DocumentPlusIcon,
+    about: 'This tool will allow you to merge several PDF files into one document, in the order you specify. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Upload the PDF files you want to combine.' },
+      { title: 'Coming Soon', description: 'Arrange the files into the desired order.' },
+      { title: 'Coming Soon', description: 'Click "Merge" to download the combined PDF.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a powerful, client-side PDF merging tool.' },
+      { icon: ArrowUpTrayIcon, title: 'Multiple Files', description: 'Will support uploading and combining many PDFs at once.' },
+      { icon: ShieldCheckIcon, title: 'Privacy Focused', description: 'Like our other tools, this will be a fully client-side converter.' }
+    ]
+  },
+  {
+    path: '/pdf/split-pdf',
+    name: 'Split PDF',
+    description: 'Extract pages or split a PDF into multiple files.',
+    category: ToolCategory.PDF,
+    component: SplitPdf,
+    icon: ScissorsIcon,
+    about: 'This tool will allow you to split a single PDF file into multiple smaller PDFs, either by extracting specific pages, page ranges, or splitting every page into a separate file. This feature is currently under development.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Upload the PDF file you want to split.' },
+      { title: 'Coming Soon', description: 'Choose your splitting options (e.g., by page range).' },
+      { title: 'Coming Soon', description: 'Download your new, smaller PDF files.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are building a versatile PDF splitting tool that runs in your browser.' },
+      { icon: DocumentTextIcon, title: 'Flexible Options', description: 'Will allow splitting by range, extracting pages, and more.' },
+      { icon: ShieldCheckIcon, title: 'Privacy Focused', description: 'Your documents will be processed locally on your device.' }
+    ]
+  },
+  {
+    path: '/pdf/sign-pdf',
+    name: 'Sign PDF',
+    description: 'Add your signature to a PDF document.',
+    category: ToolCategory.PDF,
+    component: SignPdf,
+    icon: PencilSquareIcon,
+    about: 'This tool will enable you to easily add a signature to your PDF documents. You will be able to draw a signature, type one, or upload an image of your signature. This feature is coming soon.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Upload the PDF document you need to sign.' },
+      { title: 'Coming Soon', description: 'Create or upload your signature.' },
+      { title: 'Coming Soon', description: 'Place your signature on the document and download it.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are developing an intuitive and secure PDF signing tool.' },
+      { icon: PencilIcon, title: 'Multiple Signature Types', description: 'Will support drawing, typing, or uploading a signature.' },
+      { icon: ShieldCheckIcon, title: 'Client-Side Security', description: 'Your signature and documents will not be uploaded to any server.' }
+    ]
   },
 ];

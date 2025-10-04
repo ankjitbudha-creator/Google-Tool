@@ -12,7 +12,8 @@ import {
     ArrowsRightLeftIcon,
     SparklesIcon,
     PencilSquareIcon,
-    PhotoIcon
+    PhotoIcon,
+    DocumentDuplicateIcon
 } from '../components/Icons';
 
 const categoriesWithIcons = [
@@ -22,6 +23,7 @@ const categoriesWithIcons = [
     { name: ToolCategory.GENERATOR, icon: SparklesIcon, category: ToolCategory.GENERATOR },
     { name: ToolCategory.UTILITY, icon: PencilSquareIcon, category: ToolCategory.UTILITY },
     { name: ToolCategory.IMAGE, icon: PhotoIcon, category: ToolCategory.IMAGE },
+    { name: ToolCategory.PDF, icon: DocumentDuplicateIcon, category: ToolCategory.PDF },
 ];
 
 

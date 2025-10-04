@@ -6,6 +6,7 @@ export enum ToolCategory {
   GENERATOR = 'Generators',
   UTILITY = 'Utilities',
   IMAGE = 'Image Tools',
+  PDF = 'PDF Tools',
 }
 
 export interface Tool {
