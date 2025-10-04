@@ -48,7 +48,7 @@ export const ImageCropper: React.FC = () => {
 
         const hRatio = canvasWidth / image.width;
         const vRatio = canvasHeight / image.height;
-        const ratio = Math.min(hRatio, vRatio, 1);
+        const ratio = Math.min(hRatio, vRatio);
         const scaledWidth = image.width * ratio;
         const scaledHeight = image.height * ratio;
         const offsetX = (canvasWidth - scaledWidth) / 2;
@@ -144,7 +144,7 @@ export const ImageCropper: React.FC = () => {
                         const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
                         const hRatio = canvasWidth / img.width;
                         const vRatio = canvasHeight / img.height;
-                        const ratio = Math.min(hRatio, vRatio, 1) * 0.8;
+                        const ratio = Math.min(hRatio, vRatio) * 0.8;
                         const initialWidth = img.width * ratio;
                         const initialHeight = img.height * ratio;
                         
@@ -251,7 +251,7 @@ export const ImageCropper: React.FC = () => {
         const { width: canvasWidth, height: canvasHeight } = canvas.getBoundingClientRect();
         const hRatio = canvasWidth / image.width;
         const vRatio = canvasHeight / image.height;
-        const ratio = Math.min(hRatio, vRatio, 1);
+        const ratio = Math.min(hRatio, vRatio);
         const scaledWidth = image.width * ratio;
         const scaledHeight = image.height * ratio;
         const offsetX = (canvasWidth - scaledWidth) / 2;

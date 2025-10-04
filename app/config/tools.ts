@@ -13,6 +13,9 @@ import { CPSTest } from '../components/tools/utilities/CPSTest';
 import { ImageCropper } from '../components/tools/image/ImageCropper';
 import { ImageResizer } from '../components/tools/image/ImageResizer';
 import { ImageFlipper } from '../components/tools/image/ImageFlipper';
+import { ImageRotator } from '../components/tools/image/ImageRotator';
+import { PassportPhotoMaker } from '../components/tools/image/PassportPhotoMaker';
+import { AddWatermark } from '../components/tools/image/AddWatermark';
 import { 
   CalculatorIcon, ScaleIcon, KeyIcon,
   DocumentTextIcon, CakeIcon, ArrowsRightLeftIcon, 
@@ -32,7 +35,12 @@ import {
   ArrowUpTrayIcon,
   ArrowsPointingOutIcon,
   LockClosedIcon,
-  ArrowsUpDownIcon
+  ArrowsUpDownIcon,
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon,
+  IdentificationIcon,
+  PencilSquareIcon,
+  TrashIcon,
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -283,6 +291,68 @@ export const tools: Tool[] = [
       { icon: ArrowsRightLeftIcon, title: 'Horizontal Flip', description: 'Create a mirror image of your photo with a single click.' },
       { icon: ArrowsUpDownIcon, title: 'Vertical Flip', description: 'Turn your image upside down instantly.' },
       { icon: DocumentDuplicateIcon, title: 'High-Quality PNG Export', description: 'Download your flipped image in the high-quality, lossless PNG format.' }
+    ]
+  },
+  {
+    path: '/image/image-rotator',
+    name: 'Image Rotator',
+    description: 'Rotate images by 90-degree increments or to a precise angle.',
+    category: ToolCategory.IMAGE,
+    component: ImageRotator,
+    icon: ArrowUturnRightIcon,
+    about: 'The Image Rotator is a versatile tool for adjusting the orientation of your pictures. You can perform quick 90-degree rotations or use the slider for fine-grained control over the angle. The live preview helps you get the perfect orientation before downloading. All processing is done securely in your browser.',
+    howTo: [
+      { title: 'Upload Your Image', description: 'Click the upload area to select a file, or simply drag and drop your image.' },
+      { title: 'Rotate the Image', description: 'Use the "Rotate Left" and "Rotate Right" buttons for 90-degree turns, or use the slider for a specific angle.' },
+      { title: 'Download Your Image', description: 'Once you are happy with the rotation, click the "Download Rotated Image" button to save it as a PNG file.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Client-Side Privacy', description: 'Your images are rotated directly in your browser. No data is ever sent to our servers.' },
+      { icon: ArrowUturnRightIcon, title: 'Precise Angle Control', description: 'Use the slider to rotate your image to any angle between -180 and 180 degrees.' },
+      { icon: ArrowPathIcon, title: 'Quick 90-Degree Rotations', description: 'Instantly rotate your image left or right with dedicated buttons.' },
+      { icon: DocumentDuplicateIcon, title: 'High-Quality PNG Export', description: 'Download your rotated image in the high-quality, lossless PNG format.' }
+    ]
+  },
+  {
+    path: '/image/passport-photo-maker',
+    name: 'Passport Size Photo Maker',
+    description: 'Create passport, visa, and ID photos in official sizes.',
+    category: ToolCategory.IMAGE,
+    component: PassportPhotoMaker,
+    icon: IdentificationIcon,
+    about: 'Easily create professional passport, visa, or ID photos with our Passport Size Photo Maker. This tool allows you to upload your image, crop it to precise official dimensions, adjust lighting, change the background color, and download a single photo or a full, print-ready sheet. All processing is done locally in your browser, ensuring your photos remain private.',
+    howTo: [
+      { title: 'Upload Photo', description: 'Start by uploading your photo from your device.' },
+      { title: 'Select Size & Crop', description: 'Choose a predefined size (e.g., 3.5x4.5cm, 2x2 inches) and crop the image to meet official requirements.' },
+      { title: 'Edit & Adjust', description: 'Adjust brightness, contrast, and saturation. Change the background color to white, blue, or any other color.' },
+      { title: 'Download', description: 'Download the final image as a single photo or a formatted sheet for printing on A4, Half A4, or custom sizes.' }
+    ],
+    features: [
+      { icon: PhotoIcon, title: 'Custom Size Selection', description: 'Choose from predefined standard sizes or create your own custom dimensions for any ID requirement.' },
+      { icon: PencilIcon, title: 'Image Customization', description: 'Fine-tune your photo with sliders for brightness, contrast, and saturation.' },
+      { icon: TrashIcon, title: 'Background Color Changer', description: 'Instantly change the background of your photo to a solid color to meet official guidelines.' },
+      { icon: DocumentDuplicateIcon, title: 'Print-Ready Sheets', description: 'Download images formatted for online submission or for easy printing on various sheet sizes.' }
+    ]
+  },
+  {
+    path: '/image/add-watermark',
+    name: 'Add Watermark to Image',
+    description: 'Add custom text or image watermarks to your pictures.',
+    category: ToolCategory.IMAGE,
+    component: AddWatermark,
+    icon: PencilSquareIcon,
+    about: 'Protect your images with our powerful and flexible watermarking tool. Add custom text or your own logo as a watermark, then easily adjust its position, size, rotation, and transparency. You can even create a tiled pattern for maximum protection. All processing is done in your browser, so your files are never uploaded to our servers.',
+    howTo: [
+      { title: 'Upload Your Image', description: 'Drag and drop or select an image file to get started.' },
+      { title: 'Choose Watermark Type', description: 'Select between adding a "Text" watermark or an "Image" watermark (like a logo).' },
+      { title: 'Customize and Position', description: 'Use the controls to change the content, font, color, and size. Drag, resize, and rotate the watermark directly on the preview.' },
+      { title: 'Download Your Image', description: 'Click the download button to save your watermarked image.' }
+    ],
+    features: [
+      { icon: ShieldCheckIcon, title: 'Browser-Based Processing', description: 'Your files remain private and secure; no data is stored on our servers.' },
+      { icon: PencilIcon, title: 'Full Customization', description: 'Adjust size, rotation, transparency, font, and color. Drag the watermark anywhere on the image.' },
+      { icon: PhotoIcon, title: 'Image & Text Watermarks', description: 'Use your own logo or create a custom text overlay with various styling options.' },
+      { icon: ArrowsPointingOutIcon, title: 'Tiled Watermark Effect', description: 'Enhance protection by repeating your watermark in a pattern across the entire image.' }
     ]
   },
   {

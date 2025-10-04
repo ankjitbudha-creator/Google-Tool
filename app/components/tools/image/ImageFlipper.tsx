@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState, useRef, DragEvent, useEffect } from 'react';
-import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon } from '../../components/Icons';
+import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon } from '../../Icons';
 
 export const ImageFlipper: React.FC = () => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);

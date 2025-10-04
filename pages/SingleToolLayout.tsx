@@ -41,9 +41,11 @@ const HowToStep: React.FC<{ step: Tool['howTo'][0], index: number }> = ({ step, 
 
 const SidebarWidget: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
-      {title}
-    </h3>
+    {title && (
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+        {title}
+      </h3>
+    )}
     {children}
   </div>
 );

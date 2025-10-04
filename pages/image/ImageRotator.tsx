@@ -1,12 +1,11 @@
 import React, { useState, useRef, DragEvent, useEffect } from 'react';
-import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon } from '../../components/Icons';
+import { ArrowUpTrayIcon, ArrowPathIcon, DocumentDuplicateIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon } from '../../components/Icons';
 
-export const ImageFlipper: React.FC = () => {
+export const ImageRotator: React.FC = () => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [originalFileName, setOriginalFileName] = useState<string>('image');
     
-    const [flipHorizontal, setFlipHorizontal] = useState(false);
-    const [flipVertical, setFlipVertical] = useState(false);
+    const [rotation, setRotation] = useState(0);
 
     const [message, setMessage] = useState<{ type: 'info' | 'success' | 'error', text: string } | null>(null);
     const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -19,7 +18,6 @@ export const ImageFlipper: React.FC = () => {
         const ctx = canvas?.getContext('2d');
         const image = imageRef.current;
         if (!canvas || !ctx || !image.src) {
-            // Clear canvas if no image
             if(canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
             return;
         };
@@ -38,12 +36,8 @@ export const ImageFlipper: React.FC = () => {
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
             ctx.save();
             
-            const scaleH = flipHorizontal ? -1 : 1;
-            const scaleV = flipVertical ? -1 : 1;
-            
             ctx.translate(canvasWidth / 2, canvasHeight / 2);
-            ctx.scale(scaleH, scaleV);
-            
+            ctx.rotate(rotation * Math.PI / 180);
             ctx.drawImage(image, -scaledWidth / 2, -scaledHeight / 2, scaledWidth, scaledHeight);
             
             ctx.restore();
@@ -54,7 +48,7 @@ export const ImageFlipper: React.FC = () => {
         } else {
             image.onload = draw;
         }
-    }, [imageSrc, flipHorizontal, flipVertical]);
+    }, [imageSrc, rotation]);
 
 
     const handleFileChange = (files: FileList | null) => {
@@ -72,8 +66,7 @@ export const ImageFlipper: React.FC = () => {
             reader.onload = (e) => {
                 imageRef.current.src = e.target?.result as string;
                 setImageSrc(e.target?.result as string);
-                setFlipHorizontal(false);
-                setFlipVertical(false);
+                setRotation(0);
             };
             reader.readAsDataURL(file);
             setMessage(null);
@@ -87,26 +80,27 @@ export const ImageFlipper: React.FC = () => {
             return;
         }
 
+        const angle = rotation * Math.PI / 180;
+        const sin = Math.abs(Math.sin(angle));
+        const cos = Math.abs(Math.cos(angle));
+        const newWidth = image.width * cos + image.height * sin;
+        const newHeight = image.width * sin + image.height * cos;
+
         const canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
+        canvas.width = newWidth;
+        canvas.height = newHeight;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
         ctx.save();
-        const scaleH = flipHorizontal ? -1 : 1;
-        const scaleV = flipVertical ? -1 : 1;
-        const translateX = flipHorizontal ? canvas.width : 0;
-        const translateY = flipVertical ? canvas.height : 0;
-
-        ctx.translate(translateX, translateY);
-        ctx.scale(scaleH, scaleV);
-        ctx.drawImage(image, 0, 0, image.width, image.height);
+        ctx.translate(newWidth / 2, newHeight / 2);
+        ctx.rotate(angle);
+        ctx.drawImage(image, -image.width / 2, -image.height / 2);
         ctx.restore();
     
         const link = document.createElement('a');
         const token = Math.random().toString(36).substring(2, 8);
-        link.download = `BabalTools-${originalFileName}-flipped-${token}.png`;
+        link.download = `BabalTools-${originalFileName}-rotated-${token}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
         setMessage({ type: 'success', text: 'Image downloaded successfully!' });
@@ -116,8 +110,7 @@ export const ImageFlipper: React.FC = () => {
       setImageSrc(null);
       imageRef.current.src = '';
       setOriginalFileName('image');
-      setFlipHorizontal(false);
-      setFlipVertical(false);
+      setRotation(0);
       setMessage(null);
     };
 
@@ -140,6 +133,10 @@ export const ImageFlipper: React.FC = () => {
         handleFileChange(e.dataTransfer.files);
     };
     
+    const handleRotate = (degrees: number) => {
+        setRotation(r => r + degrees);
+    };
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2 relative min-h-[400px] md:min-h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden p-4">
@@ -170,24 +167,34 @@ export const ImageFlipper: React.FC = () => {
 
             <div className="md:col-span-1 space-y-4">
                  <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 p-4 rounded-lg shadow-sm space-y-4">
-                    <h3 className="font-semibold text-gray-700 dark:text-gray-300">Flip Controls</h3>
-                    <div className="space-y-2">
+                    <h3 className="font-semibold text-gray-700 dark:text-gray-300">Rotation Controls</h3>
+                    <div className="grid grid-cols-2 gap-2">
                         <button 
-                            onClick={() => setFlipHorizontal(f => !f)} 
+                            onClick={() => handleRotate(-90)} 
                             disabled={!imageSrc}
-                            className={`w-full flex items-center justify-center gap-2 p-3 rounded-md text-sm font-medium transition-colors border ${flipHorizontal ? 'bg-primary text-white border-primary' : 'bg-transparent border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-50'}`}
+                            className={`w-full flex items-center justify-center gap-2 p-3 rounded-md text-sm font-medium transition-colors border bg-transparent border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-50`}
                         >
-                            <ArrowsRightLeftIcon className="w-5 h-5" />
-                            Flip Horizontal
+                            <ArrowUturnLeftIcon className="w-5 h-5" />
+                            Rotate Left
                         </button>
                         <button 
-                            onClick={() => setFlipVertical(f => !f)} 
+                            onClick={() => handleRotate(90)} 
                             disabled={!imageSrc}
-                            className={`w-full flex items-center justify-center gap-2 p-3 rounded-md text-sm font-medium transition-colors border ${flipVertical ? 'bg-primary text-white border-primary' : 'bg-transparent border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-50'}`}
+                            className={`w-full flex items-center justify-center gap-2 p-3 rounded-md text-sm font-medium transition-colors border bg-transparent border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-50`}
                         >
-                           <ArrowsUpDownIcon className="w-5 h-5" />
-                            Flip Vertical
+                           <ArrowUturnRightIcon className="w-5 h-5" />
+                           Rotate Right
                         </button>
+                    </div>
+                    <div>
+                        <label htmlFor="angle-slider" className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Fine-tune Angle</label>
+                         <div className="flex items-center gap-3">
+                            <input id="angle-slider" type="range" min="-180" max="180" value={rotation} onChange={e => setRotation(Number(e.target.value))} disabled={!imageSrc} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-600 accent-primary" />
+                            <div className="relative flex-shrink-0">
+                                <input type="number" value={rotation} onChange={e => setRotation(Number(e.target.value))} disabled={!imageSrc} className="w-20 p-2 pr-6 text-center border border-gray-300 dark:border-gray-600 rounded-md bg-light dark:bg-slate-700 disabled:bg-gray-200 dark:disabled:bg-slate-800/50" />
+                                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">°</span>
+                            </div>
+                        </div>
                     </div>
                  </div>
 
@@ -200,7 +207,7 @@ export const ImageFlipper: React.FC = () => {
                  <div className="space-y-2">
                      <button onClick={handleDownload} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
                         <DocumentDuplicateIcon className="w-5 h-5" />
-                        Download Flipped Image
+                        Download Rotated Image
                      </button>
                      <button onClick={handleReset} disabled={!imageSrc} className="w-full flex items-center justify-center gap-2 p-3 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
                         <ArrowPathIcon className="w-5 h-5" />
