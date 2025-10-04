@@ -182,7 +182,7 @@ export const HomePage: React.FC = () => {
                         <p className="text-gray-600 dark:text-gray-400 mb-6 italic">"{testimonial.quote}"</p>
                         <div className="text-right">
                             <p className="font-bold text-primary">{testimonial.name}</p>
-                            <p className="text-sm text-gray-500">{testimonial.title}</p>
+                            <p className="text-base text-gray-500">{testimonial.title}</p>
                         </div>
                     </div>
                 ))}

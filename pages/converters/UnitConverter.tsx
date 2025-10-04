@@ -152,7 +152,7 @@ export const UnitConverter: React.FC = () => {
     return (
         <div className="space-y-6">
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Measurement Type
                 </label>
                 <select
@@ -168,7 +168,7 @@ export const UnitConverter: React.FC = () => {
             
             <div className="flex flex-col md:flex-row items-center justify-center gap-4">
                 <div className="w-full">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From</label>
+                    <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">From</label>
                     <div className="flex">
                         <input type="number" value={fromValue} onChange={handleFromValueChange} className={inputClass} />
                         <select value={fromUnit} onChange={handleFromUnitChange} className={selectClass}>
@@ -184,7 +184,7 @@ export const UnitConverter: React.FC = () => {
                 </div>
 
                 <div className="w-full">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To</label>
+                    <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">To</label>
                     <div className="flex">
                         <input type="number" value={toValue} onChange={handleToValueChange} className={inputClass} />
                         <select value={toUnit} onChange={handleToUnitChange} className={selectClass}>

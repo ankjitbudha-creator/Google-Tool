@@ -62,7 +62,7 @@ export const BMICalculator: React.FC = () => {
         </div>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">
               Height ({unitSystem === 'metric' ? 'cm' : 'in'})
             </label>
             <input 
@@ -74,7 +74,7 @@ export const BMICalculator: React.FC = () => {
             {errors.height && <p className="text-red-500 text-xs mt-1">{errors.height}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">
               Weight ({unitSystem === 'metric' ? 'kg' : 'lbs'})
             </label>
             <input 

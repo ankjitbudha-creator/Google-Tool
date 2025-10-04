@@ -62,7 +62,7 @@ export const TemperatureConverter: React.FC = () => {
     <div className="space-y-6 max-w-md mx-auto">
       {error && <p className="text-red-500 text-center text-sm">{error}</p>}
       <div>
-        <label htmlFor="celsius" className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="celsius" className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
           Celsius (°C)
         </label>
         <input
@@ -74,7 +74,7 @@ export const TemperatureConverter: React.FC = () => {
         />
       </div>
       <div>
-        <label htmlFor="fahrenheit" className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="fahrenheit" className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
           Fahrenheit (°F)
         </label>
         <input
@@ -86,7 +86,7 @@ export const TemperatureConverter: React.FC = () => {
         />
       </div>
       <div>
-        <label htmlFor="kelvin" className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="kelvin" className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
           Kelvin (K)
         </label>
         <input

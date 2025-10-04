@@ -1,8 +1,10 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Tool } from '../types';
 import { tools } from '../config/tools';
-import { WrenchScrewdriverIcon, PencilSquareIcon } from './Icons';
+import { Spinner } from './Spinner';
 
 interface SingleToolLayoutProps {
   tool: Tool;
@@ -35,6 +37,7 @@ const HowToStep: React.FC<{ step: Tool['howTo'][0], index: number }> = ({ step, 
     </div>
 );
 
+
 const SidebarWidget: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
     {title && (
@@ -53,12 +56,19 @@ const AdPlaceholder: React.FC<{ isLarge?: boolean, title: string, description: s
     </div>
 );
 
-
 export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, children }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 500); // Simulate loading
+    return () => clearTimeout(timer);
+  }, [tool.path]);
+
 
   const popularTools = tools.slice(0, 6);
   const relatedTools = tools.filter(t => t.category === tool.category && t.path !== tool.path).slice(0, 6);
-
+  
   return (
     <div className="bg-slate-50 dark:bg-slate-900 text-gray-800 dark:text-gray-300 min-h-screen flex flex-col">
       {/* Hero Section */}
@@ -77,48 +87,50 @@ export const SingleToolLayout: React.FC<SingleToolLayoutProps> = ({ tool, childr
         <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Content Area */}
             <main className="flex-1 w-full lg:w-0">
-                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                    {children}
+                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8 min-h-[300px] flex flex-col justify-center">
+                    {isLoading ? <Spinner text={`Loading ${tool.name}...`} /> : children}
                 </div>
 
-                {/* Detailed Info Sections Wrapper */}
-                <div className="space-y-12 mt-12">
-                    {/* About Section */}
-                    <section>
-                        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                            <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">About {tool.name}</h2>
-                            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">{tool.about}</p>
-                        </div>
-                    </section>
-
-                    {/* How to Use Section */}
-                    {tool.howTo && tool.howTo.length > 0 && (
+                 {/* Detailed Info Sections Wrapper */}
+                {!isLoading && (
+                    <div className="space-y-12 mt-12">
+                        {/* About Section */}
                         <section>
                             <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">How to Use This Tool</h2>
-                                <div className="space-y-6">
-                                    {tool.howTo.map((step, index) => (
-                                        <HowToStep key={index} step={step} index={index} />
-                                    ))}
-                                </div>
+                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">About {tool.name}</h2>
+                                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">{tool.about}</p>
                             </div>
                         </section>
-                    )}
 
-                    {/* Features Section */}
-                    {tool.features && tool.features.length > 0 && (
-                        <section>
-                            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
-                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Key Features</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {tool.features.map((feature, index) => (
-                                        <FeatureCard key={index} feature={feature} />
-                                    ))}
+                        {/* How to Use Section */}
+                        {tool.howTo && tool.howTo.length > 0 && (
+                            <section>
+                                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">How to Use This Tool</h2>
+                                    <div className="space-y-6">
+                                        {tool.howTo.map((step, index) => (
+                                            <HowToStep key={index} step={step} index={index} />
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        </section>
-                    )}
-                </div>
+                            </section>
+                        )}
+
+                        {/* Features Section */}
+                        {tool.features && tool.features.length > 0 && (
+                            <section>
+                                <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Key Features</h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {tool.features.map((feature, index) => (
+                                            <FeatureCard key={index} feature={feature} />
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+                    </div>
+                )}
             </main>
 
             {/* Sidebar */}

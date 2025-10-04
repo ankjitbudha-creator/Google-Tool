@@ -1,5 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { HomeHeader } from './components/HomeHeader';
+import { Footer } from './components/Footer';
 import { ToolCard } from './components/ToolCard';
 import { tools } from './config/tools';
 import { 
@@ -9,6 +12,15 @@ import {
     ClockIcon,
     DocumentTextIcon
 } from './components/Icons';
+import { siteConfig } from './config/site';
+
+export const metadata: Metadata = {
+  title: 'Babal Tools: Free Online Tools Suite for Productivity',
+  description: siteConfig.description,
+  alternates: {
+    canonical: '/',
+  },
+};
 
 const testimonials = [
     {
@@ -39,8 +51,35 @@ const HeroIconCard: React.FC<{icon: React.ElementType, text: string, className?:
 
 
 export default function HomePage() {
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": siteConfig.baseURL,
+      "name": siteConfig.name,
+      "description": siteConfig.description,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${siteConfig.baseURL}/all-tools?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": siteConfig.baseURL,
+      "name": siteConfig.name,
+      "logo": siteConfig.logo,
+    }
+  ];
+
   return (
     <div className="bg-light dark:bg-slate-900 text-gray-800 dark:text-gray-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 text-white pt-32 pb-24 overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
@@ -55,7 +94,7 @@ export default function HomePage() {
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 mb-10">
                     <div className="text-center">
-                        <p className="text-4xl font-bold">18+</p>
+                        <p className="text-4xl font-bold">{tools.length}+</p>
                         <p className="text-indigo-200">Powerful Tools</p>
                     </div>
                      <div className="w-px h-12 bg-indigo-400 hidden sm:block"></div>

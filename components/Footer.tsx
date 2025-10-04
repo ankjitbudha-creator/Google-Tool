@@ -25,7 +25,6 @@ export const Footer: React.FC = () => {
               <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/all-tools" className="hover:text-primary transition-colors">All Tools</Link></li>
               <li><Link to="/about" className="hover:text-primary transition-colors">About</Link></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
               <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
             </ul>
           </div>
@@ -52,7 +51,7 @@ export const Footer: React.FC = () => {
       </div>
       <div className="border-t border-gray-800">
         <div className="container mx-auto px-6 py-4 text-center text-gray-500">
-           <p>&copy; 2025 Babal Tools. All Rights Reserved. | <a href="#" className="hover:text-white">Terms of Service</a> | <a href="#" className="hover:text-white">Privacy Policy</a> | Designed with ❤️ for Productivity</p>
+           <p>&copy; 2025 Babal Tools. All Rights Reserved. | Designed with ❤️ for Productivity</p>
         </div>
       </div>
     </footer>

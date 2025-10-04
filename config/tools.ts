@@ -1,3 +1,4 @@
+
 import { Tool, ToolCategory } from '../types';
 import { BMICalculator } from '../pages/calculators/BMICalculator';
 import { TipCalculator } from '../pages/calculators/TipCalculator';
@@ -47,6 +48,7 @@ import { DayCounter } from '../pages/calculators/DayCounter';
 import { DayOfTheWeekCalculator } from '../pages/calculators/DayOfTheWeekCalculator';
 import { FlashCardMaker } from '../pages/utilities/FlashCardMaker';
 import { InfoCardMaker } from '../pages/generators/InfoCardMaker';
+import { PlaceholderToolPage } from '../pages/PlaceholderToolPage';
 import { 
   CalculatorIcon, ScaleIcon, KeyIcon,
   DocumentTextIcon, CakeIcon, ArrowsRightLeftIcon, 
@@ -82,7 +84,10 @@ import {
   DocumentArrowUpIcon,
   DocumentArrowDownIcon,
   DocumentPlusIcon,
-  ScissorsIcon
+  ScissorsIcon,
+  EncoderIcon,
+  GlobeAltIcon,
+  MoonIcon
 } from '../components/Icons';
 
 export const tools: Tool[] = [
@@ -150,15 +155,17 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: DateCalculator,
     icon: CalendarDaysIcon,
-    about: 'The Date Calculator allows you to add or subtract time from a specific date, making it easy to calculate future or past dates. This feature is currently under development.',
+    about: 'Our Date Calculator is a simple yet powerful tool for calculating dates by adding or subtracting years, months, weeks, and days from a given start date. It\'s perfect for planning events, tracking deadlines, or figuring out important future or past dates with precision.',
     howTo: [
-      { title: 'Coming Soon', description: 'Select a start date.' },
-      { title: 'Coming Soon', description: 'Choose to add or subtract time.' },
-      { title: 'Coming Soon', description: 'Enter the amount of days, weeks, months, or years.' },
-      { title: 'Coming Soon', description: 'View the resulting date.' }
+      { title: 'Select a Start Date', description: 'Choose the initial date from which you want to calculate.' },
+      { title: 'Choose Operation', description: 'Select whether you want to "Add" or "Subtract" time from the start date.' },
+      { title: 'Enter Duration', description: 'Input the number of years, months, weeks, or days you want to add or subtract.' },
+      { title: 'View Result', description: 'The resulting date is calculated and displayed instantly.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side Date Calculator tool.' },
+      { icon: ClockIcon, title: 'Add & Subtract Time', description: 'Easily perform both addition and subtraction on dates.' },
+      { icon: CalendarDaysIcon, title: 'Flexible Units', description: 'Calculate with any combination of years, months, weeks, and days.' },
+      { icon: RocketLaunchIcon, title: 'Instant Calculation', description: 'Get immediate results as you adjust the dates and duration values.' },
     ]
   },
   {
@@ -168,15 +175,17 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: TimeCalculator,
     icon: ClockIcon,
-    about: 'The Time Calculator lets you perform arithmetic operations on time values. You can add or subtract hours, minutes, and seconds. This feature is currently under development.',
+    about: 'Perform basic arithmetic on time values with our simple Time Calculator. Add or subtract time in hours, minutes, and seconds to easily manage schedules, calculate work shifts, or solve time-related math problems.',
     howTo: [
-      { title: 'Coming Soon', description: 'Enter a starting time.' },
-      { title: 'Coming Soon', description: 'Choose to add or subtract.' },
-      { title: 'Coming Soon', description: 'Enter the time value to calculate.' },
-      { title: 'Coming Soon', description: 'See the resulting time.' }
+      { title: 'Set Start Time', description: 'Enter the initial time in HH:MM:SS format.' },
+      { title: 'Choose Operation', description: 'Select the plus (+) button to add time or the minus (-) button to subtract.' },
+      { title: 'Enter Duration', description: 'Input the time duration you want to add or subtract.' },
+      { title: 'See Result', description: 'The final calculated time is displayed automatically.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side Time Calculator tool.' },
+      { icon: CalculatorIcon, title: 'Time Arithmetic', description: 'Quickly add or subtract hours, minutes, and seconds from any given time.' },
+      { icon: ClockIcon, title: '24-Hour Format', description: 'Works with a standard 24-hour time format for clarity and precision.' },
+      { icon: RocketLaunchIcon, title: 'Real-Time Results', description: 'The result updates instantly as you change the input times or operation.' },
     ]
   },
   {
@@ -186,14 +195,16 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: HoursCalculator,
     icon: ClockIcon,
-    about: 'The Hours Calculator determines the total number of hours and minutes between two specified times, which can span across different days. This feature is currently under development.',
+    about: 'Calculate the total time duration in hours and minutes between a start time and an end time. Our Hours Calculator handles time periods that span across midnight, making it perfect for calculating work shifts, tracking project hours, or timing events.',
     howTo: [
-      { title: 'Coming Soon', description: 'Enter a start time and date.' },
-      { title: 'Coming Soon', description: 'Enter an end time and date.' },
-      { title: 'Coming Soon', description: 'View the total hours and minutes calculated.' }
+      { title: 'Enter Start Time', description: 'Select the time your period begins.' },
+      { title: 'Enter End Time', description: 'Select the time your period ends.' },
+      { title: 'View Duration', description: 'The total duration between the two times is calculated and displayed instantly.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+      { icon: ClockIcon, title: 'Duration Calculation', description: 'Find the exact number of hours and minutes between two points in time.' },
+      { icon: MoonIcon, title: 'Handles Overnight Spans', description: 'Accurately calculates durations that cross midnight (e.g., from 10 PM to 6 AM).' },
+      { icon: RocketLaunchIcon, title: 'Instant Feedback', description: 'See the result immediately as you adjust the start or end times.' },
     ]
   },
   {
@@ -203,14 +214,17 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: TimeCardCalculator,
     icon: CurrencyDollarIcon,
-    about: 'The Time Card Calculator helps you compute your weekly work hours and gross pay based on start and end times for each day, including breaks. This feature is currently under development.',
+    about: 'A comprehensive tool for employees and employers to calculate weekly work hours and estimate gross pay. Enter your start times, end times, and break durations for each day of the week to get a detailed summary of your work week.',
     howTo: [
-      { title: 'Coming Soon', description: 'Enter your hourly wage.' },
-      { title: 'Coming Soon', description: 'Fill in your start time, end time, and break duration for each day.' },
-      { title: 'Coming Soon', description: 'View the total hours worked and your gross pay.' }
+      { title: 'Set Hourly Rate', description: 'Enter your hourly wage to calculate your gross pay.' },
+      { title: 'Fill in Daily Hours', description: 'For each workday, enter your start time, end time, and total break duration in minutes.' },
+      { title: 'Enable/Disable Days', description: 'Use the checkboxes to include or exclude specific days from the calculation.' },
+      { title: 'View Totals', description: 'The total hours worked and total pay are calculated and displayed in real-time.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+      { icon: CurrencyDollarIcon, title: 'Pay Estimation', description: 'Automatically calculates your total gross pay based on the hours worked and your hourly rate.' },
+      { icon: CalendarDaysIcon, title: 'Weekly Overview', description: 'Input hours for a full seven-day week with options to enable or disable days as needed.' },
+      { icon: CalculatorIcon, title: 'Break Deduction', description: 'Easily subtract break times in minutes from your daily work hours for accurate calculations.' },
     ]
   },
   {
@@ -220,14 +234,16 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: TimeDurationCalculator,
     icon: ClockIcon,
-    about: 'Calculate the total time duration between a start date/time and an end date/time, broken down into years, months, days, hours, minutes, and seconds. This feature is currently under development.',
+    about: 'Find the exact duration between two specific points in time. Our Time Duration Calculator breaks down the difference between a start date/time and an end date/time into a detailed breakdown (years, months, days, etc.) and a total summary (total days, hours, etc.).',
     howTo: [
-      { title: 'Coming Soon', description: 'Enter the start date and time.' },
-      { title: 'Coming Soon', description: 'Enter the end date and time.' },
-      { title: 'Coming Soon', description: 'View the detailed time duration.' }
+      { title: 'Set Start Date & Time', description: 'Select the starting date and time for your calculation.' },
+      { title: 'Set End Date & Time', description: 'Select the ending date and time for your calculation.' },
+      { title: 'View Duration', description: 'The tool instantly displays both a detailed breakdown and a total summary of the time duration.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+      { icon: ClockIcon, title: 'Detailed Breakdown', description: 'See the duration precisely broken down into years, months, days, hours, minutes, and seconds.' },
+      { icon: DocumentTextIcon, title: 'Total Summary', description: 'Get the total duration expressed in days, hours, minutes, and seconds for a quick overview.' },
+      { icon: ShieldCheckIcon, title: 'Date Validation', description: 'The tool validates that the start date is before the end date to prevent errors.' },
     ]
   },
   {
@@ -237,14 +253,17 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: DayCounter,
     icon: CalendarDaysIcon,
-    about: 'The Day Counter calculates the exact number of days between two given dates. You can also choose to include or exclude the end day. This feature is currently under development.',
+    about: 'Easily count the number of days between two dates. This tool is perfect for tracking project timelines, counting down to an event, or calculating age in days. You can also choose whether or not to include the end day in the total count.',
     howTo: [
-      { title: 'Coming Soon', description: 'Select a start date.' },
-      { title: 'Coming Soon', description: 'Select an end date.' },
-      { title: 'Coming Soon', description: 'View the total number of days between the dates.' }
+      { title: 'Select Start Date', description: 'Choose the first date of your period.' },
+      { title: 'Select End Date', description: 'Choose the last date of your period.' },
+      { title: 'Choose Option', description: 'Optionally, check the box to include the end day in the final count.' },
+      { title: 'See the Count', description: 'The total number of days between the two dates is shown instantly.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+      { icon: CalendarDaysIcon, title: 'Simple Day Counting', description: 'Quickly get the total number of days between any two dates.' },
+      { icon: PencilIcon, title: 'Inclusion Option', description: 'Flexibly include or exclude the end day from the calculation with a single checkbox.' },
+      { icon: ShieldCheckIcon, title: 'Date Validation', description: 'Prevents errors by ensuring the start date is not after the end date.' },
     ]
   },
   {
@@ -254,13 +273,15 @@ export const tools: Tool[] = [
     category: ToolCategory.CALCULATOR,
     component: DayOfTheWeekCalculator,
     icon: CalendarDaysIcon,
-    about: 'Quickly find out the day of the week (Monday, Tuesday, etc.) for any date in the past, present, or future. This feature is currently under development.',
+    about: 'Ever wondered what day of the week you were born on, or what day a future event falls on? This tool lets you instantly find the day of the week for any given date. It also tells you the day number of the year.',
     howTo: [
-      { title: 'Coming Soon', description: 'Enter any date (day, month, year).' },
-      { title: 'Coming Soon', description: 'View the corresponding day of the week.' }
+      { title: 'Select a Date', description: 'Use the date picker to choose any date from the past, present, or future.' },
+      { title: 'View the Result', description: 'The tool instantly displays the corresponding day of the week and the day number of that year.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+      { icon: CalendarDaysIcon, title: 'Find Day of Week', description: 'Instantly determine if a date is a Monday, Tuesday, Wednesday, etc.' },
+      { icon: DocumentTextIcon, title: 'Day of the Year', description: 'Also calculates the day number within the year (e.g., February 1st is the 32nd day).' },
+      { icon: RocketLaunchIcon, title: 'Fast and Simple', description: 'A clean interface provides the information you need with no extra steps.' },
     ]
   },
   {
@@ -325,15 +346,18 @@ export const tools: Tool[] = [
     description: 'Convert times between different time zones.',
     category: ToolCategory.CONVERTER,
     component: TimeZoneConverter,
-    icon: ArrowsRightLeftIcon,
-    about: 'The Time Zone Converter allows you to find the corresponding time in different cities and time zones around the world. This feature is currently under development.',
+    icon: GlobeAltIcon,
+    about: 'Our Time Zone Converter helps you find the current time in cities across the globe. It displays your local time and allows you to add and compare multiple international time zones, making it easy to schedule meetings, coordinate with teams, or call friends and family abroad.',
     howTo: [
-      { title: 'Coming Soon', description: 'Select a date and time in your local time zone.' },
-      { title: 'Coming Soon', description: 'Add one or more other time zones.' },
-      { title: 'Coming Soon', description: 'View the converted times instantly.' }
+      { title: 'View Your Local Time', description: 'Your current local time is automatically displayed at the top for reference.' },
+      { title: 'Add Time Zones', description: 'Use the dropdown menu to select and add different time zones to your list.' },
+      { title: 'Compare Times', description: 'The list updates every second, showing the current time in all selected time zones simultaneously.' },
+      { title: 'Manage List', description: 'Remove time zones you no longer need by clicking the trash icon.' }
     ],
     features: [
-      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you this tool.' },
+      { icon: GlobeAltIcon, title: 'Global Time Zones', description: 'Access a comprehensive list of IANA time zones to find any city in the world.' },
+      { icon: ClockIcon, title: 'Live Clock', description: 'All times on the page update every second, providing a live view.' },
+      { icon: PencilIcon, title: 'Customizable List', description: 'Add and remove time zones to create a personalized dashboard for the locations that matter to you.' },
     ]
   },
   {
@@ -568,6 +592,23 @@ export const tools: Tool[] = [
         { icon: PhotoIcon, title: 'Camera & File Support', description: 'Scan codes in real-time with your camera or decode them from an uploaded image file.' },
         { icon: RocketLaunchIcon, title: 'Fast & Accurate', description: 'Powered by an advanced scanning library for quick and reliable code detection.' },
         { icon: DocumentDuplicateIcon, title: 'One-Click Copy', description: 'Easily copy the scanned data to your clipboard for use in other applications.' }
+    ]
+  },
+  {
+    path: '/utilities/url-encoder-decoder',
+    name: 'URL Encoder / Decoder',
+    description: 'Encode or decode URLs and strings.',
+    category: ToolCategory.UTILITY,
+    component: PlaceholderToolPage,
+    icon: EncoderIcon,
+    about: 'This tool will allow you to encode strings to be URL-safe or decode them back to their original form. This feature is coming soon.',
+    howTo: [
+      { title: 'Coming Soon', description: 'Paste your URL or string.' },
+      { title: 'Coming Soon', description: 'Click Encode or Decode.' },
+      { title: 'Coming Soon', description: 'Copy the result.' }
+    ],
+    features: [
+      { icon: ClockIcon, title: 'Under Development', description: 'We are working hard to bring you a high-quality, client-side URL encoding and decoding tool.' },
     ]
   },
   {
@@ -911,7 +952,7 @@ export const tools: Tool[] = [
     name: 'PDF to Text Extractor',
     description: 'Extract text from PDF files for copying and editing.',
     category: ToolCategory.PDF,
-    component: PdfToWordConverter, // Filename remains the same to minimize changes
+    component: PdfToWordConverter,
     icon: DocumentArrowDownIcon,
     about: 'This tool allows you to extract all text from a PDF document. It\'s useful for when you need to copy content from a PDF for use in other applications. Note that this tool extracts plain text only and does not preserve complex formatting or layouts.',
     howTo: [

@@ -104,17 +104,17 @@ export const AgeCalculator: React.FC = () => {
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Enter Your Date of Birth</h3>
                 <div className="grid grid-cols-3 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Day</label>
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">Day</label>
                         <input type="number" value={day} onChange={e => setDay(e.target.value)} placeholder="DD" className={getInputClass(!!calculationResult.errors.day)} max="31" min="1" />
                         {calculationResult.errors.day && <p className="text-red-500 text-xs mt-1">{calculationResult.errors.day}</p>}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Month</label>
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">Month</label>
                         <input type="number" value={month} onChange={e => setMonth(e.target.value)} placeholder="MM" className={getInputClass(!!calculationResult.errors.month)} max="12" min="1" />
                          {calculationResult.errors.month && <p className="text-red-500 text-xs mt-1">{calculationResult.errors.month}</p>}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Year</label>
+                        <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">Year</label>
                         <input type="number" value={year} onChange={e => setYear(e.target.value)} placeholder="YYYY" className={getInputClass(!!calculationResult.errors.year)} />
                         {calculationResult.errors.year && <p className="text-red-500 text-xs mt-1">{calculationResult.errors.year}</p>}
                     </div>

@@ -45,7 +45,7 @@ export const TipCalculator: React.FC = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bill Amount ($)</label>
+          <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">Bill Amount ($)</label>
           <input
             type="number"
             value={bill}
@@ -56,7 +56,7 @@ export const TipCalculator: React.FC = () => {
           {errors.bill && <p className="text-red-500 text-xs mt-1">{errors.bill}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tip Percentage (%)</label>
+          <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">Tip Percentage (%)</label>
           <input
             type="number"
             value={tipPercent}
@@ -72,7 +72,7 @@ export const TipCalculator: React.FC = () => {
            </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number of People</label>
+          <label className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-1">Number of People</label>
           <input
             type="number"
             value={people}

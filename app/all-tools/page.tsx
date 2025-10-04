@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { ToolCard } from '../components/ToolCard';
 import { tools } from '../config/tools';
@@ -26,9 +26,12 @@ const categoriesWithIcons = [
     { name: ToolCategory.PDF, icon: DocumentDuplicateIcon, category: ToolCategory.PDF },
 ];
 
+const ITEMS_PER_PAGE = 12;
+
 export default function AllToolsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('All');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const categoryCounts = useMemo(() => {
         const counts: Record<string, number> = { All: tools.length };
@@ -46,6 +49,16 @@ export default function AllToolsPage() {
             return matchesCategory && matchesSearch;
         });
     }, [searchQuery, activeCategory]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery, activeCategory]);
+
+    const totalPages = Math.ceil(filteredTools.length / ITEMS_PER_PAGE);
+    const paginatedTools = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredTools.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [currentPage, filteredTools]);
 
     return (
         <div className="bg-light dark:bg-slate-900">
@@ -135,9 +148,9 @@ export default function AllToolsPage() {
 
                         {/* Tools Grid Section */}
                         <main className="flex-1">
-                            {filteredTools.length > 0 ? (
+                            {paginatedTools.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-                                    {filteredTools.map(tool => (
+                                    {paginatedTools.map(tool => (
                                         <ToolCard key={tool.path} tool={tool} />
                                     ))}
                                 </div>
@@ -146,6 +159,39 @@ export default function AllToolsPage() {
                                     <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300">No tools found</h3>
                                     <p className="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search or filter.</p>
                                 </div>
+                            )}
+
+                            {totalPages > 1 && (
+                                <nav aria-label="Pagination" className="mt-12 flex justify-center items-center space-x-2">
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        disabled={currentPage === 1}
+                                        className="px-4 py-2 rounded-md bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Previous
+                                    </button>
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
+                                        <button
+                                            key={pageNumber}
+                                            onClick={() => setCurrentPage(pageNumber)}
+                                            className={`px-4 py-2 rounded-md border text-sm font-medium ${
+                                                currentPage === pageNumber
+                                                    ? 'bg-primary text-white border-primary'
+                                                    : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                            }`}
+                                            aria-current={currentPage === pageNumber ? 'page' : undefined}
+                                        >
+                                            {pageNumber}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages}
+                                        className="px-4 py-2 rounded-md bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Next
+                                    </button>
+                                </nav>
                             )}
                         </main>
                     </div>

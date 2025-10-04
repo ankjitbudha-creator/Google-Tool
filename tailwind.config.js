@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: 'class',
@@ -27,11 +25,23 @@ module.exports = {
           'float': 'float 6s ease-in-out infinite',
           'float-delay-1': 'float 7s ease-in-out infinite 0.5s',
           'float-delay-2': 'float 8s ease-in-out infinite 1s',
+          'shake': 'shake 0.5s ease-in-out',
+          'fade-in': 'fadeIn 0.3s ease-in-out',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-15px)' },
+        },
+        shake: {
+          '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+          '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+          '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+          '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         }
       }
     },

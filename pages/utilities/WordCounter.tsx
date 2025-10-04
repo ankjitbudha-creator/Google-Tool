@@ -23,19 +23,19 @@ export const WordCounter: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 text-center">
           <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{stats.words}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Words</p>
+              <p className="text-base text-gray-600 dark:text-gray-400">Words</p>
           </div>
            <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{stats.characters}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Characters</p>
+              <p className="text-base text-gray-600 dark:text-gray-400">Characters</p>
           </div>
            <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{stats.charactersNoSpaces}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Characters (no spaces)</p>
+              <p className="text-base text-gray-600 dark:text-gray-400">Characters (no spaces)</p>
           </div>
            <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{stats.paragraphs}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Paragraphs</p>
+              <p className="text-base text-gray-600 dark:text-gray-400">Paragraphs</p>
           </div>
       </div>
       <textarea

@@ -39,7 +39,6 @@ export const HomeHeader: React.FC = () => {
             <nav className="hidden md:flex items-center space-x-8">
               <Link to="/" className={navLinkClasses}>Home</Link>
               <Link to="/all-tools" className={navLinkClasses}>All Tools</Link>
-              <a href="#" className={navLinkClasses}>Blog</a>
               <Link to="/about" className={navLinkClasses}>About</Link>
               <Link to="/contact" className={navLinkClasses}>Contact</Link>
             </nav>
@@ -73,7 +72,6 @@ export const HomeHeader: React.FC = () => {
         <nav className="flex flex-col items-center justify-center -mt-16 h-full space-y-8">
           <Link to="/" className="text-2xl font-semibold text-white hover:text-brand-yellow" onClick={handleLinkClick}>Home</Link>
           <Link to="/all-tools" className="text-2xl font-semibold text-white hover:text-brand-yellow" onClick={handleLinkClick}>All Tools</Link>
-          <a href="#" className="text-2xl font-semibold text-white hover:text-brand-yellow" onClick={handleLinkClick}>Blog</a>
           <Link to="/about" className="text-2xl font-semibold text-white hover:text-brand-yellow" onClick={handleLinkClick}>About</Link>
           <Link to="/contact" className="text-2xl font-semibold text-white hover:text-brand-yellow" onClick={handleLinkClick}>Contact</Link>
         </nav>
